@@ -1,197 +1,259 @@
 
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, MessageSquare, MapPin, Award, Edit, LogOut } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Star, MapPin, Mail, Phone, Calendar, Edit, Shield, Camera, MessageSquare } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+// Dati di esempio
+const userData = {
+  name: "Mario Rossi",
+  image: "",
+  userType: "helper", // "helper" o "requester"
+  location: "Milano, Italia",
+  email: "mario.rossi@example.com",
+  phone: "+39 123 456 7890",
+  memberSince: "Gennaio 2023",
+  verified: true,
+  bio: "Esperto in riparazioni elettroniche e computer. Offro assistenza tecnica veloce ed efficiente. Disponibile nei weekend e alcune sere infrasettimanali.",
+  skills: ["Riparazioni PC", "Assistenza Software", "Installazione Hardware", "Recupero Dati"],
+  rating: 4.8,
+  completedTasks: 27,
+  responseRate: "98%"
+};
+
+// Recensioni di esempio
+const reviewsData = [
+  {
+    id: 1,
+    user: "Lucia Bianchi",
+    userImage: "",
+    rating: 5,
+    text: "Mario è stato fantastico! Ha risolto il problema del mio computer in pochissimo tempo. Molto professionale e gentile.",
+    date: "2 settimane fa"
+  },
+  {
+    id: 2,
+    user: "Andrea Verdi",
+    userImage: "",
+    rating: 5,
+    text: "Servizio eccellente! Ha recuperato tutti i miei dati da un hard disk danneggiato che pensavo fosse perso per sempre.",
+    date: "1 mese fa"
+  },
+  {
+    id: 3,
+    user: "Giovanni Neri",
+    userImage: "",
+    rating: 4,
+    text: "Buon servizio, ha risolto il problema anche se ci è voluto un po' più tempo del previsto. Comunque consigliato.",
+    date: "2 mesi fa"
+  }
+];
 
 const ProfilePage = () => {
-  // Dati di esempio
-  const user = {
-    name: "Marco Bianchi",
-    type: "helper",
-    image: "",
-    location: "Milano, Italia",
-    joined: "Novembre 2023",
-    rating: 4.8,
-    reviews: 12,
-    completedJobs: 24,
-    bio: "Esperto in riparazioni domestiche, elettronica e piccoli lavori di manutenzione. Disponibile principalmente nei weekend e in alcune sere infrasettimanali.",
-    skills: ["Riparazioni", "Elettronica", "Idraulica", "Montaggio mobili"],
-    reviews: [
-      {
-        id: 1,
-        user: "Giulia V.",
-        userImage: "",
-        rating: 5,
-        text: "Marco è stato preciso e professionale. Ha risolto il problema in poco tempo.",
-        date: "2 settimane fa"
-      },
-      {
-        id: 2,
-        user: "Luca R.",
-        userImage: "",
-        rating: 5,
-        text: "Ottimo lavoro con il montaggio dei mobili. Consigliatissimo!",
-        date: "1 mese fa"
-      },
-      {
-        id: 3,
-        user: "Anna M.",
-        userImage: "",
-        rating: 4,
-        text: "Puntuale e competente. Unico difetto: ha lasciato qualche residuo di lavorazione.",
-        date: "2 mesi fa"
-      }
-    ]
-  };
-  
   return (
     <Layout>
       <div className="space-y-6">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+        <div className="md:flex md:items-start md:gap-6">
+          {/* Profilo principale */}
+          <Card className="md:w-1/3">
+            <CardHeader className="relative pb-2">
+              <div className="absolute top-3 right-3">
+                <Button variant="ghost" size="icon">
+                  <Edit size={18} />
+                </Button>
+              </div>
               <div className="flex flex-col items-center">
-                <Avatar className="w-24 h-24 border-4 border-white shadow-md">
-                  <AvatarFallback className="bg-solvy-blue text-white text-2xl">
-                    {user.name.charAt(0)}
+                <Avatar className="w-24 h-24 mb-2">
+                  <AvatarFallback className="text-2xl bg-solvy-blue/10 text-solvy-blue">
+                    {userData.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="mt-4 flex flex-col items-center md:items-start">
-                  <div className="flex items-center gap-1 text-yellow-500 mb-1">
-                    <Star className="fill-yellow-400 text-yellow-400" size={16} />
-                    <span className="font-medium">{user.rating}</span>
-                    <span className="text-solvy-gray text-sm">({user.reviews} recensioni)</span>
-                  </div>
-                  <div className="flex items-center text-solvy-gray text-sm mb-1">
-                    <MapPin size={14} className="mr-1" />
-                    <span>{user.location}</span>
-                  </div>
-                  <div className="flex items-center text-solvy-gray text-sm">
-                    <Award size={14} className="mr-1" />
-                    <span>{user.completedJobs} lavori completati</span>
-                  </div>
+                <CardTitle className="text-xl">{userData.name}</CardTitle>
+                <div className="flex items-center gap-1 mt-1 text-solvy-gray">
+                  <MapPin size={14} />
+                  <span className="text-sm">{userData.location}</span>
+                </div>
+                {userData.verified && (
+                  <Badge className="mt-2 bg-solvy-green hover:bg-solvy-green/90">
+                    <Shield size={12} className="mr-1" /> Verificato
+                  </Badge>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="pb-2 space-y-4">
+              <div>
+                <h3 className="font-medium mb-2">Bio</h3>
+                <p className="text-sm text-solvy-gray">{userData.bio}</p>
+              </div>
+              
+              <div>
+                <h3 className="font-medium mb-2">Competenze</h3>
+                <div className="flex flex-wrap gap-2">
+                  {userData.skills.map((skill, index) => (
+                    <Badge key={index} variant="outline">
+                      {skill}
+                    </Badge>
+                  ))}
                 </div>
               </div>
               
-              <div className="flex-1 text-center md:text-left">
-                <div className="flex flex-col md:flex-row justify-between">
-                  <div>
-                    <h1 className="text-2xl font-bold">{user.name}</h1>
-                    <Badge variant={user.type === "helper" ? "blue" : "green"}>
-                      {user.type === "helper" ? "Helper" : "Richiedente"}
-                    </Badge>
-                    <p className="text-sm text-solvy-gray mt-2">Membro da {user.joined}</p>
+              <div className="pt-2 border-t">
+                <h3 className="font-medium mb-2">Informazioni di contatto</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2 text-solvy-gray">
+                    <Mail size={14} />
+                    <span>{userData.email}</span>
                   </div>
-                  <div className="flex gap-2 mt-4 md:mt-0 justify-center md:justify-start">
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
-                      <Edit size={14} />
-                      <span>Modifica</span>
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex items-center gap-1 text-red-500 border-red-200 hover:bg-red-50">
-                      <LogOut size={14} />
-                      <span>Esci</span>
-                    </Button>
+                  <div className="flex items-center gap-2 text-solvy-gray">
+                    <Phone size={14} />
+                    <span>{userData.phone}</span>
                   </div>
-                </div>
-                
-                <div className="mt-4">
-                  <h2 className="font-medium mb-2">Bio</h2>
-                  <p className="text-sm text-solvy-gray">{user.bio}</p>
-                </div>
-                
-                <div className="mt-4">
-                  <h2 className="font-medium mb-2">Competenze</h2>
-                  <div className="flex flex-wrap gap-2">
-                    {user.skills.map((skill, index) => (
-                      <Badge key={index} variant="outline" className="bg-blue-50">
-                        {skill}
-                      </Badge>
-                    ))}
+                  <div className="flex items-center gap-2 text-solvy-gray">
+                    <Calendar size={14} />
+                    <span>Membro da {userData.memberSince}</span>
                   </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Tabs defaultValue="reviews">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="reviews">Recensioni</TabsTrigger>
-            <TabsTrigger value="history">Attività</TabsTrigger>
-          </TabsList>
+            </CardContent>
+            <CardFooter className="flex flex-col space-y-2 pt-2 border-t">
+              <Button className="w-full bg-solvy-blue hover:bg-solvy-blue/90">
+                <Camera size={16} className="mr-2" /> Modifica foto
+              </Button>
+              <Button variant="outline" className="w-full">
+                <MessageSquare size={16} className="mr-2" /> Invia messaggio
+              </Button>
+            </CardFooter>
+          </Card>
           
-          <TabsContent value="reviews" className="mt-4 space-y-4">
-            {user.reviews.map((review) => (
-              <Card key={review.id}>
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-4">
-                    <Avatar className="w-10 h-10">
-                      <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
-                        {review.user.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <h3 className="font-medium">{review.user}</h3>
-                        <span className="text-sm text-solvy-gray">{review.date}</span>
+          {/* Statistiche e recensioni */}
+          <div className="md:flex-1 mt-6 md:mt-0">
+            <Tabs defaultValue="stats" className="w-full">
+              <TabsList className="w-full grid grid-cols-2">
+                <TabsTrigger value="stats">Statistiche</TabsTrigger>
+                <TabsTrigger value="reviews">Recensioni</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="stats" className="space-y-4 mt-4">
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg">Statistiche come {userData.userType === "helper" ? "Helper" : "Richiedente"}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div className="space-y-1">
+                        <p className="text-2xl font-bold text-solvy-blue">{userData.rating}</p>
+                        <p className="text-sm text-solvy-gray">Valutazione</p>
+                        <div className="flex items-center justify-center">
+                          {Array(5).fill(0).map((_, i) => (
+                            <Star
+                              key={i}
+                              size={14}
+                              className={`${i < Math.floor(userData.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+                            />
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex items-center mb-2">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            size={14}
-                            className={`${
-                              i < review.rating
-                                ? "fill-yellow-400 text-yellow-400"
-                                : "fill-gray-200 text-gray-200"
-                            }`}
-                          />
+                      <div className="space-y-1">
+                        <p className="text-2xl font-bold text-solvy-blue">{userData.completedTasks}</p>
+                        <p className="text-sm text-solvy-gray">Lavori completati</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-2xl font-bold text-solvy-blue">{userData.responseRate}</p>
+                        <p className="text-sm text-solvy-gray">Tasso di risposta</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg">Livello di esperienza</CardTitle>
+                    <CardDescription>In base alle attività svolte</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Riparazioni PC</span>
+                          <span className="font-medium">Avanzato</span>
+                        </div>
+                        <div className="h-2 bg-gray-100 rounded-full">
+                          <div className="h-2 bg-solvy-blue rounded-full w-[85%]"></div>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Assistenza Software</span>
+                          <span className="font-medium">Intermedio</span>
+                        </div>
+                        <div className="h-2 bg-gray-100 rounded-full">
+                          <div className="h-2 bg-solvy-blue rounded-full w-[60%]"></div>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Recupero Dati</span>
+                          <span className="font-medium">Esperto</span>
+                        </div>
+                        <div className="h-2 bg-gray-100 rounded-full">
+                          <div className="h-2 bg-solvy-blue rounded-full w-[95%]"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="reviews" className="mt-4">
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg">Recensioni ricevute</CardTitle>
+                    <CardDescription>
+                      Media recensioni: {userData.rating}/5 ({reviewsData.length} recensioni)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-[400px] pr-4">
+                      <div className="space-y-4">
+                        {reviewsData.map((review) => (
+                          <div key={review.id} className="pb-4 border-b last:border-0">
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex items-center gap-2">
+                                <Avatar className="w-8 h-8">
+                                  <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
+                                    {review.user.charAt(0)}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <span className="font-medium">{review.user}</span>
+                              </div>
+                              <div className="flex items-center">
+                                {Array(5).fill(0).map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    size={14}
+                                    className={`${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            <p className="text-sm text-solvy-gray mb-1">{review.text}</p>
+                            <p className="text-xs text-solvy-gray">{review.date}</p>
+                          </div>
                         ))}
                       </div>
-                      <p className="text-sm text-solvy-gray">{review.text}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-          
-          <TabsContent value="history" className="mt-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Attività recenti</CardTitle>
-                <CardDescription>Visualizza la tua cronologia di lavori</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-solvy-gray">
-                  <p>Le tue attività appariranno qui.</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                    </ScrollArea>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
       </div>
     </Layout>
-  );
-};
-
-// Badge personalizzato per il tipo di utente
-const Badge = ({ children, variant = "blue" }: { children: React.ReactNode; variant?: "blue" | "green" | "outline" }) => {
-  const baseClasses = "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium";
-  
-  const variantClasses = {
-    blue: "bg-blue-100 text-solvy-blue",
-    green: "bg-green-100 text-solvy-green",
-    outline: "border border-gray-200"
-  };
-  
-  return (
-    <span className={`${baseClasses} ${variantClasses[variant]}`}>
-      {children}
-    </span>
   );
 };
 
