@@ -1,0 +1,162 @@
+
+import Layout from "@/components/Layout";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Search, MapPin, Clock, Star } from "lucide-react";
+import { useState } from "react";
+
+// Dati di esempio
+const requestsData = [
+  {
+    id: 1,
+    title: "Aiuto con trasloco",
+    category: "Casa",
+    description: "Ho bisogno di aiuto per spostare alcuni mobili pesanti al secondo piano.",
+    location: "Milano, Italia",
+    distance: "2.5 km",
+    timePosted: "3 ore fa",
+    budget: "€50",
+    user: {
+      name: "Marco B.",
+      image: "",
+      rating: 4.8,
+      reviews: 12
+    }
+  },
+  {
+    id: 2,
+    title: "Riparazione computer",
+    category: "Tecnologia",
+    description: "Il mio computer non si avvia correttamente. Necessito di un esperto per diagnosticare il problema.",
+    location: "Milano, Italia",
+    distance: "4.2 km",
+    timePosted: "1 giorno fa",
+    budget: "€40",
+    user: {
+      name: "Luisa M.",
+      image: "",
+      rating: 4.5,
+      reviews: 8
+    }
+  },
+  {
+    id: 3,
+    title: "Lezioni di matematica",
+    category: "Istruzione",
+    description: "Cerco qualcuno per aiutare mio figlio con le equazioni di secondo grado. Due ore a settimana.",
+    location: "Milano, Italia",
+    distance: "1.8 km",
+    timePosted: "5 ore fa",
+    budget: "€25/ora",
+    user: {
+      name: "Giulia V.",
+      image: "",
+      rating: 5.0,
+      reviews: 20
+    }
+  }
+];
+
+const Dashboard = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  return (
+    <Layout>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+        </div>
+        
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-solvy-gray" size={18} />
+          <Input 
+            className="pl-10" 
+            placeholder="Cerca richieste..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        
+        <Tabs defaultValue="nearby">
+          <TabsList className="w-full grid grid-cols-3">
+            <TabsTrigger value="nearby">Vicino a te</TabsTrigger>
+            <TabsTrigger value="recent">Recenti</TabsTrigger>
+            <TabsTrigger value="popular">Popolari</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="nearby" className="space-y-4 mt-4">
+            {requestsData.map((request) => (
+              <Card key={request.id} className="overflow-hidden">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-lg">{request.title}</CardTitle>
+                      <Badge variant="secondary" className="mt-1 bg-blue-100 text-solvy-blue hover:bg-blue-200">
+                        {request.category}
+                      </Badge>
+                    </div>
+                    <div className="text-right">
+                      <span className="font-bold text-lg text-solvy-blue">{request.budget}</span>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pb-2">
+                  <p className="text-sm text-solvy-gray line-clamp-2 mb-3">
+                    {request.description}
+                  </p>
+                  <div className="flex items-center gap-4 text-sm">
+                    <div className="flex items-center text-solvy-gray">
+                      <MapPin size={14} className="mr-1" />
+                      <span>{request.distance}</span>
+                    </div>
+                    <div className="flex items-center text-solvy-gray">
+                      <Clock size={14} className="mr-1" />
+                      <span>{request.timePosted}</span>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-2 border-t flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
+                        {request.user.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="text-sm font-medium">{request.user.name}</div>
+                      <div className="flex items-center text-xs text-solvy-gray">
+                        <Star size={12} className="fill-yellow-400 text-yellow-400 mr-1" />
+                        <span>{request.user.rating} ({request.user.reviews})</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Button size="sm" className="bg-solvy-blue hover:bg-solvy-blue/90">
+                    Offri aiuto
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </TabsContent>
+          
+          <TabsContent value="recent" className="space-y-4 mt-4">
+            <div className="text-center py-12 text-solvy-gray">
+              <p>Caricamento richieste recenti...</p>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="popular" className="space-y-4 mt-4">
+            <div className="text-center py-12 text-solvy-gray">
+              <p>Caricamento richieste popolari...</p>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </Layout>
+  );
+};
+
+export default Dashboard;
