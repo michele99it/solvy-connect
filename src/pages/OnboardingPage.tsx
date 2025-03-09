@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,7 +28,7 @@ const OnboardingPage = () => {
               className="w-20 h-20 object-contain" 
             />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Solvy</h1>
+          <h1 className="text-3xl font-bold text-gray-900 font-montserrat">Solvy</h1>
           <p className="text-solvy-gray">Connetti con chi può aiutarti</p>
         </div>
         

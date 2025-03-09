@@ -103,9 +103,11 @@ const Layout = ({ children }: LayoutProps) => {
                 </div>
               </PopoverContent>
             </Popover>
-            <Button className="hidden md:flex bg-solvy-blue hover:bg-solvy-blue/90">
-              Nuova Richiesta
-            </Button>
+            <Link to="/new">
+              <Button className="hidden md:flex bg-solvy-blue hover:bg-solvy-blue/90">
+                Nuova Richiesta
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -122,7 +124,7 @@ const Layout = ({ children }: LayoutProps) => {
         )}>
           <nav className="flex flex-col gap-2">
             <Link 
-              to="/" 
+              to="/dashboard" 
               className="flex items-center gap-3 p-3 rounded-md hover:bg-solvy-blue/10"
               onClick={() => setNavOpen(false)}
             >
@@ -172,7 +174,7 @@ const Layout = ({ children }: LayoutProps) => {
       
       <div className="sticky bottom-0 md:hidden bg-white border-t shadow-lg">
         <div className="flex items-center justify-around h-14">
-          <Link to="/" className="flex flex-col items-center justify-center flex-1 h-full text-solvy-gray hover:text-solvy-blue">
+          <Link to="/dashboard" className="flex flex-col items-center justify-center flex-1 h-full text-solvy-gray hover:text-solvy-blue">
             <Home size={20} />
             <span className="text-xs mt-1">Home</span>
           </Link>
