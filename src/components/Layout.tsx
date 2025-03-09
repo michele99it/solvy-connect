@@ -1,4 +1,3 @@
-
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -36,7 +35,11 @@ const Layout = ({ children }: LayoutProps) => {
               {navOpen ? <X size={20} /> : <Menu size={20} />}
             </Button>
             <Link to="/" className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-solvy-blue text-white font-bold">S</div>
+              <img 
+                src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
+                alt="Solvy Logo" 
+                className="w-8 h-8 object-contain" 
+              />
               <span className="text-lg font-bold text-solvy-dark">Solvy</span>
             </Link>
           </div>
@@ -72,7 +75,6 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
       </header>
       
-      {/* Mobile Navigation */}
       <div 
         className={cn(
           "fixed inset-0 z-20 bg-background/80 backdrop-blur-sm transition-all duration-300 md:hidden",
@@ -126,12 +128,10 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
       </div>
       
-      {/* Main Content */}
       <main className="flex-1 container px-4 py-6 md:px-6 md:py-8">
         {children}
       </main>
       
-      {/* Mobile Bottom Navigation */}
       <div className="sticky bottom-0 md:hidden bg-white border-t shadow-lg">
         <div className="flex items-center justify-around h-14">
           <Link to="/" className="flex flex-col items-center justify-center flex-1 h-full text-solvy-gray hover:text-solvy-blue">

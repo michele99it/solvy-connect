@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -22,9 +21,11 @@ const OnboardingPage = () => {
       <div className="w-full max-w-md mx-auto space-y-8 animate-fade-in">
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center">
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-solvy-blue text-white font-bold text-xl">
-              S
-            </div>
+            <img 
+              src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
+              alt="Solvy Logo" 
+              className="w-20 h-20 object-contain" 
+            />
           </div>
           <h1 className="text-3xl font-bold text-gray-900">Solvy</h1>
           <p className="text-solvy-gray">Connetti con chi può aiutarti</p>
