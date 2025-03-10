@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, MoreVertical, Phone, Video } from "lucide-react";
-import { useState } from "react";
+import { Send, MoreVertical, Paperclip } from "lucide-react";
+import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 // Dati di esempio
@@ -90,12 +90,30 @@ const chatsData = [
 const ChatPage = () => {
   const [activeChat, setActiveChat] = useState(chatsData[0]);
   const [message, setMessage] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const sendMessage = () => {
     if (message.trim()) {
       // In un'app reale, qui invieresti il messaggio al backend
       console.log("Sending message:", message);
       setMessage("");
+    }
+  };
+  
+  const handleAttachClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      // In un'app reale, qui gestiresti il caricamento del file
+      console.log("File selected:", e.target.files[0].name);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
   
@@ -160,12 +178,6 @@ const ChatPage = () => {
             </div>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="icon" className="text-solvy-gray">
-                <Phone size={18} />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-solvy-gray">
-                <Video size={18} />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-solvy-gray">
                 <MoreVertical size={18} />
               </Button>
             </div>
@@ -208,6 +220,19 @@ const ChatPage = () => {
           {/* Input messaggi */}
           <div className="p-4 border-t">
             <div className="flex items-center gap-2">
+              <Button 
+                onClick={handleAttachClick}
+                size="icon" 
+                variant="ghost"
+              >
+                <Paperclip size={18} />
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  className="hidden" 
+                  onChange={handleFileChange}
+                />
+              </Button>
               <Input 
                 placeholder="Scrivi un messaggio..." 
                 value={message}

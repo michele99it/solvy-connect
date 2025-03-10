@@ -1,3 +1,4 @@
+
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,8 +8,7 @@ import {
   Home,
   User,
   Bell,
-  Menu,
-  X
+  Settings
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { 
@@ -16,13 +16,27 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetTrigger,
+  SheetDescription,
+  SheetFooter,
+  SheetClose
+} from "@/components/ui/sheet";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const [navOpen, setNavOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [notifications, setNotifications] = useState(true);
+  const [language, setLanguage] = useState("it");
   const location = useLocation();
   
   const isActive = (path: string) => location.pathname === path;
@@ -33,14 +47,6 @@ const Layout = ({ children }: LayoutProps) => {
       <header className="sticky top-0 z-30 bg-white border-b shadow-sm">
         <div className="container flex items-center justify-between h-16 px-4 md:px-6">
           <div className="flex items-center gap-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="md:hidden"
-              onClick={() => setNavOpen(!navOpen)}
-            >
-              {navOpen ? <X size={20} /> : <Menu size={20} />}
-            </Button>
             <Link to="/dashboard" className="flex items-center gap-2">
               <img 
                 src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
@@ -105,73 +111,79 @@ const Layout = ({ children }: LayoutProps) => {
                 </div>
               </PopoverContent>
             </Popover>
-            <Link to="/new">
-              <Button className="hidden md:flex bg-solvy-blue hover:bg-solvy-blue/90">
-                Nuova Richiesta
-              </Button>
-            </Link>
+            
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Settings size={20} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Impostazioni</SheetTitle>
+                  <SheetDescription>
+                    Personalizza la tua esperienza su Solvy
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="py-6 space-y-6">
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold">Aspetto</h4>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="darkMode" className="flex items-center gap-2">
+                        Modalità scura
+                      </Label>
+                      <Switch 
+                        id="darkMode" 
+                        checked={darkMode} 
+                        onCheckedChange={setDarkMode} 
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold">Notifiche</h4>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="notifications" className="flex items-center gap-2">
+                        Abilita notifiche
+                      </Label>
+                      <Switch 
+                        id="notifications" 
+                        checked={notifications} 
+                        onCheckedChange={setNotifications} 
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold">Lingua</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button 
+                        variant={language === "it" ? "default" : "outline"} 
+                        className="w-full"
+                        onClick={() => setLanguage("it")}
+                      >
+                        Italiano
+                      </Button>
+                      <Button 
+                        variant={language === "en" ? "default" : "outline"}
+                        className="w-full"
+                        onClick={() => setLanguage("en")}
+                      >
+                        English
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <SheetFooter>
+                  <SheetClose asChild>
+                    <Button className="w-full">Salva impostazioni</Button>
+                  </SheetClose>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </header>
-      
-      {/* Mobile sidebar - We'll hide this as requested */}
-      <div className="hidden">
-        {/* This sidebar is now hidden but kept in code in case it needs to be restored later */}
-        <div className={cn(
-          "fixed inset-0 z-20 bg-background/80 backdrop-blur-sm transition-all duration-300 md:hidden",
-          navOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        )}
-      >
-        <div className={cn(
-          "fixed top-16 left-0 bottom-0 w-3/4 max-w-xs bg-white shadow-xl p-4 transition-transform duration-300",
-          navOpen ? "translate-x-0" : "-translate-x-full"
-        )}>
-          <nav className="flex flex-col gap-2">
-            <Link 
-              to="/dashboard" 
-              className="flex items-center gap-3 p-3 rounded-md hover:bg-solvy-blue/10"
-              onClick={() => setNavOpen(false)}
-            >
-              <Home size={20} className="text-solvy-blue" />
-              <span>Home</span>
-            </Link>
-            <Link 
-              to="/search" 
-              className="flex items-center gap-3 p-3 rounded-md hover:bg-solvy-blue/10"
-              onClick={() => setNavOpen(false)}
-            >
-              <Search size={20} className="text-solvy-blue" />
-              <span>Cerca</span>
-            </Link>
-            <Link 
-              to="/chat" 
-              className="flex items-center gap-3 p-3 rounded-md hover:bg-solvy-blue/10"
-              onClick={() => setNavOpen(false)}
-            >
-              <MessageSquare size={20} className="text-solvy-blue" />
-              <span>Chat</span>
-            </Link>
-            <Link 
-              to="/profile" 
-              className="flex items-center gap-3 p-3 rounded-md hover:bg-solvy-blue/10"
-              onClick={() => setNavOpen(false)}
-            >
-              <User size={20} className="text-solvy-blue" />
-              <span>Profilo</span>
-            </Link>
-            <Link 
-              to="/new" 
-              className="mt-4"
-              onClick={() => setNavOpen(false)}
-            >
-              <Button className="w-full bg-solvy-blue hover:bg-solvy-blue/90">
-                Nuova Richiesta
-              </Button>
-            </Link>
-          </nav>
-        </div>
-      </div>
-      </div>
       
       <main className="flex-1 container px-4 py-6 md:px-6 md:py-8">
         {children}
@@ -182,42 +194,48 @@ const Layout = ({ children }: LayoutProps) => {
           <Link 
             to="/dashboard" 
             className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-200",
+              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
               isActive("/dashboard") 
-                ? "text-solvy-blue scale-110" 
+                ? "text-solvy-blue transform scale-110" 
                 : "text-solvy-gray hover:text-solvy-blue"
             )}
           >
             <Home 
               size={20} 
-              className={cn("transition-transform", isActive("/dashboard") && "animate-pulse")} 
+              className={cn(
+                "transition-all duration-300",
+                isActive("/dashboard") && "animate-bounce" 
+              )} 
             />
             <span className="text-xs mt-1">Home</span>
           </Link>
           <Link 
             to="/search" 
             className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-200",
+              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
               isActive("/search") 
-                ? "text-solvy-blue scale-110" 
+                ? "text-solvy-blue transform scale-110" 
                 : "text-solvy-gray hover:text-solvy-blue"
             )}
           >
             <Search 
               size={20}
-              className={cn("transition-transform", isActive("/search") && "animate-pulse")}
+              className={cn(
+                "transition-all duration-300",
+                isActive("/search") && "animate-bounce"
+              )}
             />
             <span className="text-xs mt-1">Cerca</span>
           </Link>
           <Link 
             to="/new" 
             className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-200",
-              isActive("/new") && "scale-110"
+              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
+              isActive("/new") && "transform scale-110"
             )}
           >
             <div className={cn(
-              "flex items-center justify-center w-10 h-10 rounded-full bg-solvy-blue text-white transition-transform hover:scale-110",
+              "flex items-center justify-center w-10 h-10 rounded-full bg-solvy-blue text-white transition-all duration-300 hover:scale-110",
               isActive("/new") && "animate-pulse"
             )}>
               <span className="text-lg font-bold">+</span>
@@ -226,30 +244,36 @@ const Layout = ({ children }: LayoutProps) => {
           <Link 
             to="/chat" 
             className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-200",
+              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
               isActive("/chat") 
-                ? "text-solvy-blue scale-110" 
+                ? "text-solvy-blue transform scale-110" 
                 : "text-solvy-gray hover:text-solvy-blue"
             )}
           >
             <MessageSquare 
               size={20}
-              className={cn("transition-transform", isActive("/chat") && "animate-pulse")}
+              className={cn(
+                "transition-all duration-300",
+                isActive("/chat") && "animate-bounce"
+              )}
             />
             <span className="text-xs mt-1">Chat</span>
           </Link>
           <Link 
             to="/profile" 
             className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-200",
+              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
               isActive("/profile") 
-                ? "text-solvy-blue scale-110" 
+                ? "text-solvy-blue transform scale-110" 
                 : "text-solvy-gray hover:text-solvy-blue"
             )}
           >
             <User 
               size={20}
-              className={cn("transition-transform", isActive("/profile") && "animate-pulse")}
+              className={cn(
+                "transition-all duration-300",
+                isActive("/profile") && "animate-bounce"
+              )}
             />
             <span className="text-xs mt-1">Profilo</span>
           </Link>
