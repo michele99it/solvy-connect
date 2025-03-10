@@ -20,20 +20,17 @@ const OnboardingPage = () => {
       <div className="w-full max-w-md mx-auto space-y-8 animate-fade-in">
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center">
-            <div className="relative">
-              <div className="absolute -inset-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur opacity-70 animate-pulse"></div>
-              <img 
-                src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
-                alt="Solvy Logo" 
-                className="relative w-24 h-24 object-contain" 
-              />
-            </div>
+            <img 
+              src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
+              alt="Solvy Logo" 
+              className="w-24 h-24 object-contain" 
+            />
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-montserrat">Solvy</h1>
-          <p className="text-solvy-gray text-lg">Connetti con chi può aiutarti</p>
+          <h1 className="text-4xl font-bold text-[#439cf8] font-montserrat">Solvy</h1>
+          <p className="text-solvy-gray text-lg">Trova e ripara</p>
           <div className="max-w-sm mx-auto">
             <p className="text-sm text-center text-solvy-gray">
-              Trova soluzioni ai tuoi problemi o diventa un Solver e condividi le tue competenze
+              Un bene a te, un bene a tutti
             </p>
           </div>
         </div>
@@ -60,7 +57,7 @@ const OnboardingPage = () => {
                   <Input id="password" type="password" className="rounded-lg" />
                 </div>
                 <Button 
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-lg transition-all hover:shadow-md" 
+                  className="w-full bg-solvy-blue hover:bg-solvy-blue/90 rounded-lg transition-all hover:shadow-md" 
                   onClick={handleContinue}
                 >
                   Accedi
@@ -95,7 +92,7 @@ const OnboardingPage = () => {
                 </div>
                 <div className="pt-2">
                   <Button 
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-lg transition-all hover:shadow-md" 
+                    className="w-full bg-solvy-blue hover:bg-solvy-blue/90 rounded-lg transition-all hover:shadow-md" 
                     onClick={handleContinue}
                   >
                     Crea account

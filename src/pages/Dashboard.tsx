@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -62,6 +62,78 @@ const requestsData = [
   }
 ];
 
+// Dati recenti di esempio
+const recentRequestsData = [
+  {
+    id: 4,
+    title: "Supporto per installazione TV",
+    category: "Elettronica",
+    description: "Ho acquistato una nuova TV e ho bisogno di aiuto per montarla a parete.",
+    location: "Milano, Italia",
+    distance: "3.7 km",
+    timePosted: "1 ora fa",
+    budget: "€35",
+    user: {
+      name: "Roberto P.",
+      image: "",
+      rating: 4.6,
+      reviews: 9
+    }
+  },
+  {
+    id: 5,
+    title: "Aiuto per progetto di design",
+    category: "Creatività",
+    description: "Cerco qualcuno con competenze in grafica per un piccolo progetto aziendale.",
+    location: "Milano, Italia",
+    distance: "5.1 km",
+    timePosted: "3 ore fa",
+    budget: "€70",
+    user: {
+      name: "Alessia T.",
+      image: "",
+      rating: 4.9,
+      reviews: 15
+    }
+  }
+];
+
+// Dati popolari di esempio
+const popularRequestsData = [
+  {
+    id: 6,
+    title: "Giardinaggio e potatura siepi",
+    category: "Esterni",
+    description: "Ho un piccolo giardino che necessita di manutenzione e potatura siepi.",
+    location: "Milano, Italia",
+    distance: "1.2 km",
+    timePosted: "2 giorni fa",
+    budget: "€60",
+    user: {
+      name: "Matteo L.",
+      image: "",
+      rating: 4.7,
+      reviews: 23
+    }
+  },
+  {
+    id: 7,
+    title: "Lezioni di chitarra",
+    category: "Musica",
+    description: "Cerco un insegnante di chitarra per lezioni settimanali a domicilio.",
+    location: "Milano, Italia",
+    distance: "3.4 km",
+    timePosted: "5 giorni fa",
+    budget: "€30/ora",
+    user: {
+      name: "Cristina R.",
+      image: "",
+      rating: 4.8,
+      reviews: 17
+    }
+  }
+];
+
 // Dati degli solver sulla mappa
 const solversData = [
   {
@@ -110,23 +182,9 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [selectedSolver, setSelectedSolver] = useState<typeof solversData[0] | null>(null);
-  const [isSearchSticky, setIsSearchSticky] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
   
   // Immagina che questo sia il nome dell'utente recuperato dal backend
   const userName = "Mario";
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      if (searchRef.current) {
-        const { top } = searchRef.current.getBoundingClientRect();
-        setIsSearchSticky(top <= 0);
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   
   const handleSolverClick = (solver: typeof solversData[0]) => {
     setSelectedSolver(solver);
@@ -135,31 +193,70 @@ const Dashboard = () => {
   const handleCloseHelperDetails = () => {
     setSelectedSolver(null);
   };
+
+  // Funzione per renderizzare le card delle richieste
+  const renderRequestCards = (requests: typeof requestsData) => {
+    return requests.map((request) => (
+      <Card key={request.id} className="overflow-hidden">
+        <CardHeader className="pb-2">
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle className="text-lg">{request.title}</CardTitle>
+              <Badge variant="secondary" className="mt-1 bg-blue-100 text-solvy-blue hover:bg-blue-200">
+                {request.category}
+              </Badge>
+            </div>
+            <div className="text-right">
+              <span className="font-bold text-lg text-solvy-blue">{request.budget}</span>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="pb-2">
+          <p className="text-sm text-solvy-gray line-clamp-2 mb-3">
+            {request.description}
+          </p>
+          <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center text-solvy-gray">
+              <MapPin size={14} className="mr-1" />
+              <span>{request.distance}</span>
+            </div>
+            <div className="flex items-center text-solvy-gray">
+              <Clock size={14} className="mr-1" />
+              <span>{request.timePosted}</span>
+            </div>
+          </div>
+        </CardContent>
+        <CardFooter className="pt-2 border-t flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Avatar className="w-8 h-8">
+              <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
+                {request.user.name.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="text-sm font-medium">{request.user.name}</div>
+              <div className="flex items-center text-xs text-solvy-gray">
+                <Star size={12} className="fill-yellow-400 text-yellow-400 mr-1" />
+                <span>{request.user.rating} ({request.user.reviews})</span>
+              </div>
+            </div>
+          </div>
+          <Button size="sm" className="bg-solvy-blue hover:bg-solvy-blue/90">
+            Offri aiuto
+          </Button>
+        </CardFooter>
+      </Card>
+    ));
+  };
   
   return (
     <Layout>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold font-montserrat">Ciao {userName}, la tua homepage</h1>
+          <h1 className="text-2xl font-bold text-[#439cf8] font-montserrat">Ciao {userName}, la tua homepage</h1>
         </div>
         
-        {isSearchSticky && (
-          <div className="fixed top-16 left-0 right-0 z-20 bg-white shadow-md py-2 px-4">
-            <div className="container max-w-screen-lg mx-auto">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-solvy-gray" size={18} />
-                <Input 
-                  className="pl-10" 
-                  placeholder="Cerca richieste..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-        
-        <div ref={searchRef} className="relative">
+        <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-solvy-gray" size={18} />
           <Input 
             className="pl-10" 
@@ -182,69 +279,15 @@ const Dashboard = () => {
             </TabsList>
             
             <TabsContent value="nearby" className="space-y-4 mt-4">
-              {requestsData.map((request) => (
-                <Card key={request.id} className="overflow-hidden">
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{request.title}</CardTitle>
-                        <Badge variant="secondary" className="mt-1 bg-blue-100 text-solvy-blue hover:bg-blue-200">
-                          {request.category}
-                        </Badge>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-bold text-lg text-solvy-blue">{request.budget}</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pb-2">
-                    <p className="text-sm text-solvy-gray line-clamp-2 mb-3">
-                      {request.description}
-                    </p>
-                    <div className="flex items-center gap-4 text-sm">
-                      <div className="flex items-center text-solvy-gray">
-                        <MapPin size={14} className="mr-1" />
-                        <span>{request.distance}</span>
-                      </div>
-                      <div className="flex items-center text-solvy-gray">
-                        <Clock size={14} className="mr-1" />
-                        <span>{request.timePosted}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="pt-2 border-t flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
-                          {request.user.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="text-sm font-medium">{request.user.name}</div>
-                        <div className="flex items-center text-xs text-solvy-gray">
-                          <Star size={12} className="fill-yellow-400 text-yellow-400 mr-1" />
-                          <span>{request.user.rating} ({request.user.reviews})</span>
-                        </div>
-                      </div>
-                    </div>
-                    <Button size="sm" className="bg-solvy-blue hover:bg-solvy-blue/90">
-                      Offri aiuto
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
+              {renderRequestCards(requestsData)}
             </TabsContent>
             
             <TabsContent value="recent" className="space-y-4 mt-4">
-              <div className="text-center py-12 text-solvy-gray">
-                <p>Caricamento richieste recenti...</p>
-              </div>
+              {renderRequestCards(recentRequestsData)}
             </TabsContent>
             
             <TabsContent value="popular" className="space-y-4 mt-4">
-              <div className="text-center py-12 text-solvy-gray">
-                <p>Caricamento richieste popolari...</p>
-              </div>
+              {renderRequestCards(popularRequestsData)}
             </TabsContent>
             
             <TabsContent value="map" className="mt-4">

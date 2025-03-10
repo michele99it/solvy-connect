@@ -67,7 +67,7 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				solvy: {
-					blue: '#3B82F6',
+					blue: '#439cf8',
 					green: '#10B981',
 					light: '#F9FAFB',
 					dark: '#1F2937',

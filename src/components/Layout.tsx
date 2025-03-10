@@ -53,7 +53,7 @@ const Layout = ({ children }: LayoutProps) => {
                 alt="Solvy Logo" 
                 className="w-8 h-8 object-contain" 
               />
-              <span className="text-lg font-bold text-solvy-dark font-montserrat">Solvy</span>
+              <span className="text-lg font-bold text-[#439cf8] font-montserrat">Solvy</span>
             </Link>
           </div>
           
@@ -190,93 +190,93 @@ const Layout = ({ children }: LayoutProps) => {
       </main>
       
       <div className="sticky bottom-0 bg-white border-t shadow-lg">
-        <div className="flex items-center justify-around h-14">
-          <Link 
-            to="/dashboard" 
-            className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
-              isActive("/dashboard") 
-                ? "text-solvy-blue transform scale-110" 
-                : "text-solvy-gray hover:text-solvy-blue"
-            )}
-          >
-            <Home 
-              size={20} 
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-around h-14 rounded-t-xl bg-white">
+            <Link 
+              to="/dashboard" 
               className={cn(
-                "transition-all duration-300",
-                isActive("/dashboard") && "animate-bounce" 
-              )} 
-            />
-            <span className="text-xs mt-1">Home</span>
-          </Link>
-          <Link 
-            to="/search" 
-            className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
-              isActive("/search") 
-                ? "text-solvy-blue transform scale-110" 
-                : "text-solvy-gray hover:text-solvy-blue"
-            )}
-          >
-            <Search 
-              size={20}
-              className={cn(
-                "transition-all duration-300",
-                isActive("/search") && "animate-bounce"
+                "flex flex-col items-center justify-center flex-1 h-full transition-colors duration-200",
+                isActive("/dashboard") 
+                  ? "text-solvy-blue" 
+                  : "text-solvy-gray hover:text-solvy-blue"
               )}
-            />
-            <span className="text-xs mt-1">Cerca</span>
-          </Link>
-          <Link 
-            to="/new" 
-            className={cn(
-              "flex md:hidden flex-col items-center justify-center flex-1 h-full transition-all duration-300",
-              isActive("/new") && "transform scale-110"
-            )}
-          >
-            <div className={cn(
-              "flex items-center justify-center w-10 h-10 rounded-full bg-solvy-blue text-white transition-all duration-300 hover:scale-110",
-              isActive("/new") && "animate-pulse"
-            )}>
-              <span className="text-lg font-bold">+</span>
-            </div>
-          </Link>
-          <Link 
-            to="/chat" 
-            className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
-              isActive("/chat") 
-                ? "text-solvy-blue transform scale-110" 
-                : "text-solvy-gray hover:text-solvy-blue"
-            )}
-          >
-            <MessageSquare 
-              size={20}
+            >
+              <Home 
+                size={20} 
+                className={cn(
+                  "transition-transform duration-200",
+                  isActive("/dashboard") && "transform scale-110" 
+                )} 
+              />
+              <span className="text-xs mt-1">Home</span>
+            </Link>
+            <Link 
+              to="/search" 
               className={cn(
-                "transition-all duration-300",
-                isActive("/chat") && "animate-bounce"
+                "flex flex-col items-center justify-center flex-1 h-full transition-colors duration-200",
+                isActive("/search") 
+                  ? "text-solvy-blue" 
+                  : "text-solvy-gray hover:text-solvy-blue"
               )}
-            />
-            <span className="text-xs mt-1">Chat</span>
-          </Link>
-          <Link 
-            to="/profile" 
-            className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
-              isActive("/profile") 
-                ? "text-solvy-blue transform scale-110" 
-                : "text-solvy-gray hover:text-solvy-blue"
-            )}
-          >
-            <User 
-              size={20}
+            >
+              <Search 
+                size={20}
+                className={cn(
+                  "transition-transform duration-200",
+                  isActive("/search") && "transform scale-110"
+                )}
+              />
+              <span className="text-xs mt-1">Cerca</span>
+            </Link>
+            <Link 
+              to="/new" 
               className={cn(
-                "transition-all duration-300",
-                isActive("/profile") && "animate-bounce"
+                "flex md:hidden flex-col items-center justify-center flex-1 h-full",
               )}
-            />
-            <span className="text-xs mt-1">Profilo</span>
-          </Link>
+            >
+              <div className={cn(
+                "flex items-center justify-center w-10 h-10 rounded-full bg-solvy-blue text-white hover:bg-solvy-blue/90 transition-colors duration-200",
+              )}>
+                <span className="text-lg font-bold">+</span>
+              </div>
+            </Link>
+            <Link 
+              to="/chat" 
+              className={cn(
+                "flex flex-col items-center justify-center flex-1 h-full transition-colors duration-200",
+                isActive("/chat") 
+                  ? "text-solvy-blue" 
+                  : "text-solvy-gray hover:text-solvy-blue"
+              )}
+            >
+              <MessageSquare 
+                size={20}
+                className={cn(
+                  "transition-transform duration-200",
+                  isActive("/chat") && "transform scale-110"
+                )}
+              />
+              <span className="text-xs mt-1">Chat</span>
+            </Link>
+            <Link 
+              to="/profile" 
+              className={cn(
+                "flex flex-col items-center justify-center flex-1 h-full transition-colors duration-200",
+                isActive("/profile") 
+                  ? "text-solvy-blue" 
+                  : "text-solvy-gray hover:text-solvy-blue"
+              )}
+            >
+              <User 
+                size={20}
+                className={cn(
+                  "transition-transform duration-200",
+                  isActive("/profile") && "transform scale-110"
+                )}
+              />
+              <span className="text-xs mt-1">Profilo</span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
