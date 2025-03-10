@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Send, MoreVertical, Paperclip } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 // Dati di esempio
@@ -91,6 +91,17 @@ const ChatPage = () => {
   const [activeChat, setActiveChat] = useState(chatsData[0]);
   const [message, setMessage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    // Scroll to bottom when messages change
+    if (scrollAreaRef.current) {
+      const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollElement) {
+        scrollElement.scrollTop = scrollElement.scrollHeight;
+      }
+    }
+  }, [activeChat.messages]);
   
   const sendMessage = () => {
     if (message.trim()) {
@@ -184,7 +195,7 @@ const ChatPage = () => {
           </div>
           
           {/* Area messaggi */}
-          <ScrollArea className="flex-1 p-4 bg-gray-50">
+          <ScrollArea className="flex-1 p-4 bg-gray-50" ref={scrollAreaRef}>
             <div className="space-y-4">
               {activeChat.messages.map((msg) => (
                 <div 
@@ -224,6 +235,7 @@ const ChatPage = () => {
                 onClick={handleAttachClick}
                 size="icon" 
                 variant="ghost"
+                className="text-solvy-gray hover:text-solvy-blue transition-colors"
               >
                 <Paperclip size={18} />
                 <input 
@@ -231,6 +243,7 @@ const ChatPage = () => {
                   ref={fileInputRef} 
                   className="hidden" 
                   onChange={handleFileChange}
+                  accept="image/*,video/*"
                 />
               </Button>
               <Input 
@@ -243,7 +256,7 @@ const ChatPage = () => {
               <Button 
                 onClick={sendMessage}
                 size="icon" 
-                className="bg-solvy-blue hover:bg-solvy-blue/90"
+                className="bg-solvy-blue hover:bg-solvy-blue/90 transition-colors"
               >
                 <Send size={18} />
               </Button>

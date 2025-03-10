@@ -230,7 +230,7 @@ const Layout = ({ children }: LayoutProps) => {
           <Link 
             to="/new" 
             className={cn(
-              "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
+              "flex md:hidden flex-col items-center justify-center flex-1 h-full transition-all duration-300",
               isActive("/new") && "transform scale-110"
             )}
           >
