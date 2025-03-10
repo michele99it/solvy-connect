@@ -80,6 +80,14 @@
   }
 }
 
+@font-face {
+  font-family: '29lt Riwaya Informal';
+  src: url('/fonts/29LTRiwayaInformal-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
@@ -87,6 +95,11 @@ body {
 
 .font-montserrat {
   font-family: 'Montserrat', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-riwaya {
+  font-family: '29lt Riwaya Informal', 'Montserrat', sans-serif;
   letter-spacing: -0.02em;
 }
 
@@ -154,4 +167,13 @@ body {
 
 .animate-scale-in {
   animation: scale-in 0.3s ease-out forwards;
+}
+
+.nav-icon-active {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.nav-icon {
+  transition: transform 0.2s ease;
 }
