@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { MapPin, Navigation } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface Helper {
+interface Solver {
   id: number;
   name: string;
   position: { x: number; y: number };
@@ -15,12 +15,18 @@ interface Helper {
 }
 
 interface FakeMapProps {
-  helpers: Helper[];
-  onHelperClick: (helper: Helper) => void;
+  solvers: Solver[];
+  onSolverClick: (solver: Solver) => void;
 }
 
-const FakeMap = ({ helpers, onHelperClick }: FakeMapProps) => {
-  const [hoveredHelper, setHoveredHelper] = useState<number | null>(null);
+const FakeMap = ({ solvers, onSolverClick }: FakeMapProps) => {
+  const [hoveredSolver, setHoveredSolver] = useState<number | null>(null);
+  const [selectedSolver, setSelectedSolver] = useState<number | null>(null);
+
+  const handleSolverClick = (solver: Solver) => {
+    setSelectedSolver(solver.id);
+    onSolverClick(solver);
+  };
 
   return (
     <div className="relative w-full h-[400px] bg-blue-50 rounded-lg overflow-hidden">
@@ -65,46 +71,56 @@ const FakeMap = ({ helpers, onHelperClick }: FakeMapProps) => {
         </div>
       </div>
       
-      {/* Helper pins */}
-      {helpers.map((helper) => (
-        <div 
-          key={helper.id}
-          className="absolute cursor-pointer z-10 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-200"
-          style={{ 
-            left: `${helper.position.x}%`, 
-            top: `${helper.position.y}%`, 
-          }}
-          onClick={() => onHelperClick(helper)}
-          onMouseEnter={() => setHoveredHelper(helper.id)}
-          onMouseLeave={() => setHoveredHelper(null)}
-        >
-          <div className={cn(
-            "flex flex-col items-center",
-            hoveredHelper === helper.id && "scale-110 drop-shadow-md"
-          )}>
-            <MapPin 
-              size={32} 
-              className={cn(
-                "text-red-500 fill-white transition-colors",
-                hoveredHelper === helper.id && "text-red-600 fill-red-100"
-              )} 
-            />
-            <div className={cn(
-              "absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rounded-full flex items-center justify-center",
-              hoveredHelper === helper.id && "bg-red-100"
-            )}>
-              <span className="text-[10px] font-bold text-red-500">{helper.id}</span>
-            </div>
-            
-            {hoveredHelper === helper.id && (
-              <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-white rounded-lg shadow-md p-1.5 min-w-28 text-center">
-                <p className="text-xs font-medium">{helper.name}</p>
-                <p className="text-[10px] text-solvy-gray">{helper.skills[0]}</p>
-              </div>
+      {/* Solver pins */}
+      {solvers.map((solver) => {
+        const isSelected = selectedSolver === solver.id;
+        const isHovered = hoveredSolver === solver.id;
+        
+        return (
+          <div 
+            key={solver.id}
+            className={cn(
+              "absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2 transition-all duration-200",
+              isSelected ? "z-30" : "z-10"
             )}
+            style={{ 
+              left: `${solver.position.x}%`, 
+              top: `${solver.position.y}%`, 
+            }}
+            onClick={() => handleSolverClick(solver)}
+            onMouseEnter={() => setHoveredSolver(solver.id)}
+            onMouseLeave={() => setHoveredSolver(null)}
+          >
+            <div className={cn(
+              "flex flex-col items-center",
+              (isHovered || isSelected) && "scale-110 drop-shadow-md"
+            )}>
+              <MapPin 
+                size={32} 
+                className={cn(
+                  "text-red-500 fill-white transition-colors",
+                  (isHovered || isSelected) && "text-red-600 fill-red-100"
+                )} 
+              />
+              {!isSelected && (
+                <div className={cn(
+                  "absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rounded-full flex items-center justify-center",
+                  isHovered && "bg-red-100"
+                )}>
+                  <span className="text-[10px] font-bold text-red-500">{solver.id}</span>
+                </div>
+              )}
+              
+              {(isHovered || isSelected) && (
+                <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-white rounded-lg shadow-md p-1.5 min-w-28 text-center">
+                  <p className="text-xs font-medium">{solver.name}</p>
+                  <p className="text-[10px] text-solvy-gray">{solver.skills[0]}</p>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
       
       {/* Controlli mappa */}
       <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">

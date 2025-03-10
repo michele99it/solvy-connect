@@ -5,12 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Check, User, Wrench } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const OnboardingPage = () => {
   const [activeTab, setActiveTab] = useState("login");
-  const [userType, setUserType] = useState<"helper" | "requester" | null>(null);
   const navigate = useNavigate();
   
   const handleContinue = () => {
@@ -18,132 +16,105 @@ const OnboardingPage = () => {
   };
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 to-white p-4">
       <div className="w-full max-w-md mx-auto space-y-8 animate-fade-in">
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-4">
           <div className="flex items-center justify-center">
-            <img 
-              src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
-              alt="Solvy Logo" 
-              className="w-20 h-20 object-contain" 
-            />
+            <div className="relative">
+              <div className="absolute -inset-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur opacity-70 animate-pulse"></div>
+              <img 
+                src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
+                alt="Solvy Logo" 
+                className="relative w-24 h-24 object-contain" 
+              />
+            </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 font-montserrat">Solvy</h1>
-          <p className="text-solvy-gray">Connetti con chi può aiutarti</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-montserrat">Solvy</h1>
+          <p className="text-solvy-gray text-lg">Connetti con chi può aiutarti</p>
+          <div className="max-w-sm mx-auto">
+            <p className="text-sm text-center text-solvy-gray">
+              Trova soluzioni ai tuoi problemi o diventa un Solver e condividi le tue competenze
+            </p>
+          </div>
         </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Accedi</TabsTrigger>
-            <TabsTrigger value="signup">Registrati</TabsTrigger>
+            <TabsTrigger value="login" className="rounded-xl transition-all data-[state=active]:bg-solvy-blue data-[state=active]:text-white">Accedi</TabsTrigger>
+            <TabsTrigger value="signup" className="rounded-xl transition-all data-[state=active]:bg-solvy-blue data-[state=active]:text-white">Registrati</TabsTrigger>
           </TabsList>
           
           <TabsContent value="login">
-            <Card>
-              <CardHeader>
-                <CardTitle>Bentornato</CardTitle>
-                <CardDescription>Inserisci i tuoi dati per accedere</CardDescription>
+            <Card className="border-none shadow-lg">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold text-center">Bentornato</CardTitle>
+                <CardDescription className="text-center">Inserisci i tuoi dati per accedere</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="nome@esempio.com" />
+                  <Input id="email" type="email" placeholder="nome@esempio.com" className="rounded-lg" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" />
+                  <Input id="password" type="password" className="rounded-lg" />
                 </div>
-                <Button className="w-full bg-solvy-blue hover:bg-solvy-blue/90" onClick={handleContinue}>
+                <Button 
+                  className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-lg transition-all hover:shadow-md" 
+                  onClick={handleContinue}
+                >
                   Accedi
                 </Button>
                 <div className="text-center text-sm text-solvy-gray">
-                  <a href="#" className="underline">Password dimenticata?</a>
+                  <a href="#" className="text-solvy-blue hover:underline">Password dimenticata?</a>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
           
           <TabsContent value="signup">
-            <Card>
-              <CardHeader>
-                <CardTitle>Crea un account</CardTitle>
-                <CardDescription>
-                  {userType 
-                    ? `Ti stai registrando come ${userType === 'helper' ? 'helper' : 'richiedente'}`
-                    : "Scegli il tipo di account"
-                  }
+            <Card className="border-none shadow-lg">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold text-center">Crea un account</CardTitle>
+                <CardDescription className="text-center">
+                  Registrati per richiedere o offrire aiuto
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                {!userType ? (
-                  <div className="space-y-4">
-                    <div 
-                      className={`p-4 border rounded-lg cursor-pointer transition-all hover:border-solvy-blue hover:bg-blue-50`}
-                      onClick={() => setUserType("requester")}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-solvy-blue/10 flex items-center justify-center">
-                          <User className="h-5 w-5 text-solvy-blue" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-medium">Richiedente</h3>
-                          <p className="text-sm text-solvy-gray">Cerca persone che possano aiutarti</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div 
-                      className={`p-4 border rounded-lg cursor-pointer transition-all hover:border-solvy-blue hover:bg-blue-50`}
-                      onClick={() => setUserType("helper")}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-solvy-blue/10 flex items-center justify-center">
-                          <Wrench className="h-5 w-5 text-solvy-blue" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-medium">Helper</h3>
-                          <p className="text-sm text-solvy-gray">Offri il tuo aiuto e guadagna</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-4 text-solvy-green">
-                      <Check size={18} />
-                      <span className="text-sm font-medium">
-                        {userType === 'helper' ? 'Helper' : 'Richiedente'} selezionato
-                      </span>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Nome completo</Label>
-                      <Input id="name" placeholder="Mario Rossi" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-email">Email</Label>
-                      <Input id="signup-email" type="email" placeholder="nome@esempio.com" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-password">Password</Label>
-                      <Input id="signup-password" type="password" />
-                    </div>
-                    <Button className="w-full bg-solvy-blue hover:bg-solvy-blue/90" onClick={handleContinue}>
-                      Crea account
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={() => setUserType(null)}
-                    >
-                      Torna indietro
-                    </Button>
-                  </div>
-                )}
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nome completo</Label>
+                  <Input id="name" placeholder="Mario Rossi" className="rounded-lg" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-email">Email</Label>
+                  <Input id="signup-email" type="email" placeholder="nome@esempio.com" className="rounded-lg" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-password">Password</Label>
+                  <Input id="signup-password" type="password" className="rounded-lg" />
+                </div>
+                <div className="pt-2">
+                  <Button 
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-lg transition-all hover:shadow-md" 
+                    onClick={handleContinue}
+                  >
+                    Crea account
+                  </Button>
+                </div>
+                <div className="text-center text-xs text-solvy-gray">
+                  <p>Creando un account, accetti i nostri <a href="#" className="text-solvy-blue hover:underline">Termini di servizio</a> e <a href="#" className="text-solvy-blue hover:underline">Privacy Policy</a></p>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
+        
+        <div className="flex items-center justify-center text-sm text-solvy-gray">
+          <div className="flex gap-1 items-center">
+            <div className="w-2 h-2 rounded-full bg-solvy-green"></div>
+            <span>Tutte le connessioni sono sicure e criptate</span>
+          </div>
+        </div>
       </div>
     </div>
   );
