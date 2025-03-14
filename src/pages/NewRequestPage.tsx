@@ -428,7 +428,7 @@ const NewRequestPage = () => {
               <CardFooter className="flex justify-center pt-4">
                 <Button 
                   variant="outline" 
-                  className={`${darkMode ? "border-gray-600 text-white hover:bg-gray-700" : ""}`}
+                  className={`w-full ${darkMode ? "border-gray-600 text-white hover:bg-gray-700" : ""}`}
                   onClick={() => setShowSolvers(false)}
                 >
                   {language === "it" ? "Torna alla richiesta" : "Back to request"}

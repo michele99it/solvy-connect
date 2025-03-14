@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from "react";
 
-export function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
+export function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState<boolean>(false);
   
   useEffect(() => {
     // Initial check for SSR compatibility
