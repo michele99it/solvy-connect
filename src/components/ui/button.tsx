@@ -27,6 +27,7 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        xs: "h-7 text-xs rounded-md px-2 py-1", // Add extra small size for mobile contact buttons
       },
     },
     defaultVariants: {

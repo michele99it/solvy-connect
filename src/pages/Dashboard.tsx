@@ -1,3 +1,4 @@
+
 import { useState, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ import { Slider } from "@/components/ui/slider";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const requestsData = [
   {
@@ -194,6 +196,7 @@ const Dashboard = () => {
   
   const navigate = useNavigate();
   const { darkMode, language } = useAppContext();
+  const isMobile = useIsMobile();
   
   const form = useForm({
     defaultValues: {
@@ -306,15 +309,19 @@ const Dashboard = () => {
           </div>
           <div className="flex gap-2">
             <Button 
-              size="sm" 
+              size={isMobile ? "xs" : "sm"} 
               variant="contact"
               onClick={() => handleContact(request)}
             >
-              <MessageCircle size={16} />
-              {language === "it" ? "Contatta" : "Contact"}
+              {isMobile ? <MessageCircle size={14} /> : (
+                <>
+                  <MessageCircle size={16} />
+                  {language === "it" ? "Contatta" : "Contact"}
+                </>
+              )}
             </Button>
             <Button 
-              size="sm" 
+              size={isMobile ? "xs" : "sm"} 
               className="bg-solvy-blue hover:bg-solvy-blue/90"
               onClick={() => handleOfferHelp(request)}
             >
@@ -453,7 +460,7 @@ const Dashboard = () => {
         </div>
 
         <Dialog open={confirmationOpen} onOpenChange={setConfirmationOpen}>
-          <DialogContent className={`sm:max-w-md max-h-[90vh] overflow-y-auto ${darkMode ? "bg-gray-800 border-gray-700 text-white" : ""}`}>
+          <DialogContent className={`sm:max-w-md max-h-[80vh] overflow-y-auto ${darkMode ? "bg-gray-800 border-gray-700 text-white" : ""}`}>
             <DialogHeader>
               <DialogTitle className={darkMode ? "text-white" : ""}>
                 {language === "it" ? "Conferma offerta di aiuto" : "Confirm help offer"}
@@ -611,7 +618,7 @@ const Dashboard = () => {
               </div>
             )}
             
-            <DialogFooter className="flex-col sm:flex-col gap-2 mt-2">
+            <DialogFooter className="flex-col sm:flex-col gap-2 mt-2 pb-2">
               <Button 
                 onClick={handleConfirm}
                 className="w-full bg-solvy-blue hover:bg-solvy-blue/90"
@@ -634,4 +641,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

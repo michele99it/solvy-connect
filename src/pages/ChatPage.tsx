@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,8 +8,8 @@ import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useAppContext } from "@/contexts/AppContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-// Dati di esempio
 const chatsData = [
   {
     id: 1,
@@ -90,18 +89,16 @@ const chatsData = [
 ];
 
 const ChatPage = () => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useIsMobile();
   const { darkMode, language } = useAppContext();
   
   const [activeChat, setActiveChat] = useState(chatsData[0]);
   const [message, setMessage] = useState("");
-  // Inizia mostrando sempre la lista delle chat, sia su mobile che desktop
   const [showChatList, setShowChatList] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // Scroll to bottom when messages change
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
@@ -111,7 +108,6 @@ const ChatPage = () => {
   }, [activeChat.messages]);
   
   useEffect(() => {
-    // Su desktop, mostra sempre sia la lista che la chat attiva
     if (!isMobile) {
       setShowChatList(true);
     }
@@ -119,7 +115,6 @@ const ChatPage = () => {
   
   const sendMessage = () => {
     if (message.trim()) {
-      // In un'app reale, qui invieresti il messaggio al backend
       console.log("Sending message:", message);
       setMessage("");
     }
@@ -133,9 +128,7 @@ const ChatPage = () => {
   
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      // In un'app reale, qui gestiresti il caricamento del file
       console.log("File selected:", e.target.files[0].name);
-      // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -145,7 +138,6 @@ const ChatPage = () => {
   return (
     <Layout>
       <div className={`flex h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)] rounded-lg overflow-hidden border ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
-        {/* Lista chat - sempre visibile su desktop, condizionalmente su mobile */}
         {(showChatList || !isMobile) && (
           <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col border-r ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
             <div className={`p-4 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
@@ -199,10 +191,8 @@ const ChatPage = () => {
           </div>
         )}
         
-        {/* Area chat - visibile su desktop sempre, su mobile quando showChatList è false */}
         {(!isMobile || !showChatList) && (
           <div className="flex-1 flex flex-col">
-            {/* Header chat */}
             <div className={`flex items-center justify-between p-4 border-b ${darkMode ? "border-gray-700" : ""}`}>
               <div className="flex items-center gap-3">
                 {isMobile && (
@@ -240,7 +230,6 @@ const ChatPage = () => {
               </div>
             </div>
             
-            {/* Area messaggi - con corretto overflow e massima larghezza */}
             <ScrollArea 
               className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`} 
               ref={scrollAreaRef}
@@ -256,13 +245,13 @@ const ChatPage = () => {
                   >
                     <div 
                       className={cn(
-                        "max-w-[80%] rounded-lg px-4 py-3 break-words",
+                        "max-w-[80%] rounded-lg px-4 py-3 break-words text-wrap",
                         msg.sender === "me" 
                           ? "bg-solvy-blue text-white rounded-br-none" 
                           : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white border rounded-bl-none")
                       )}
                     >
-                      <p className="whitespace-normal break-words">{msg.text}</p>
+                      <p className="whitespace-normal break-words text-wrap text-left">{msg.text}</p>
                       <p 
                         className={cn(
                           "text-right text-xs mt-1",
@@ -279,7 +268,6 @@ const ChatPage = () => {
               </div>
             </ScrollArea>
             
-            {/* Input messaggi */}
             <div className={`p-4 border-t ${darkMode ? "border-gray-700" : ""}`}>
               <div className="flex items-center gap-2">
                 <Button 
