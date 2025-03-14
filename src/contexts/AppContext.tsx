@@ -9,6 +9,9 @@ interface AppContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   translations: Record<string, string>;
+  isAuthenticated?: boolean;
+  login?: () => void;
+  logout?: () => void;
 }
 
 const translations = {
@@ -67,6 +70,21 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     return (savedLanguage as Language) || 'it';
   });
 
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    const auth = localStorage.getItem('authenticated');
+    return auth === 'true';
+  });
+
+  const login = () => {
+    localStorage.setItem('authenticated', 'true');
+    setIsAuthenticated(true);
+  };
+
+  const logout = () => {
+    localStorage.setItem('authenticated', 'false');
+    setIsAuthenticated(false);
+  };
+
   const toggleDarkMode = () => {
     setDarkMode((prev: boolean) => !prev);
   };
@@ -102,6 +120,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         translations: Object.fromEntries(
           Object.keys(translations).map(key => [key, getTranslation(key)])
         ),
+        isAuthenticated,
+        login,
+        logout
       }}
     >
       {children}

@@ -7,11 +7,18 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const OnboardingPage = () => {
+interface OnboardingPageProps {
+  onLogin?: () => void;
+}
+
+const OnboardingPage = ({ onLogin }: OnboardingPageProps) => {
   const [activeTab, setActiveTab] = useState("login");
   const navigate = useNavigate();
   
   const handleContinue = () => {
+    if (onLogin) {
+      onLogin();
+    }
     navigate("/dashboard");
   };
   

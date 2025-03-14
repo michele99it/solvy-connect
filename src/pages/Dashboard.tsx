@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, MapPin, Clock, Star, Map as MapIcon, CheckSquare } from "lucide-react";
+import { Search, MapPin, Clock, Star, Map as MapIcon, CheckSquare, MessageCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 import { useAppContext } from "@/contexts/AppContext";
@@ -15,6 +15,7 @@ import FakeMap from "@/components/FakeMap";
 import { Slider } from "@/components/ui/slider";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { Switch } from "@/components/ui/switch";
 
 const requestsData = [
   {
@@ -188,6 +189,8 @@ const Dashboard = () => {
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [hourlyRate, setHourlyRate] = useState(30);
   const [estimatedHours, setEstimatedHours] = useState(1);
+  const [isFixedPrice, setIsFixedPrice] = useState(false);
+  const [fixedPrice, setFixedPrice] = useState(30);
   
   const navigate = useNavigate();
   const { darkMode, language } = useAppContext();
@@ -210,7 +213,7 @@ const Dashboard = () => {
   };
 
   const calculateEstimatedTotal = () => {
-    return hourlyRate * estimatedHours;
+    return isFixedPrice ? fixedPrice : hourlyRate * estimatedHours;
   };
 
   const handleOfferHelp = (request: any) => {
@@ -229,6 +232,8 @@ const Dashboard = () => {
     
     setHourlyRate(30);
     setEstimatedHours(defaultHours);
+    setFixedPrice(parseFloat(request.budget.replace(/[^\d.]/g, '')) || 30);
+    setIsFixedPrice(false);
     setConfirmationOpen(true);
   };
 
@@ -239,6 +244,16 @@ const Dashboard = () => {
       description: language === "it" 
         ? `La tua offerta di aiuto è stata inviata a ${selectedRequest.user.name}` 
         : `Your offer to help has been sent to ${selectedRequest.user.name}`,
+    });
+    navigate("/chat");
+  };
+
+  const handleContact = (request: any) => {
+    toast({
+      title: language === "it" ? "Contatto avviato" : "Contact initiated",
+      description: language === "it" 
+        ? `Hai iniziato una chat con ${request.user.name}` 
+        : `You started a chat with ${request.user.name}`,
     });
     navigate("/chat");
   };
@@ -289,13 +304,23 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <Button 
-            size="sm" 
-            className="bg-solvy-blue hover:bg-solvy-blue/90"
-            onClick={() => handleOfferHelp(request)}
-          >
-            {language === "it" ? "Offri aiuto" : "Offer help"}
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              size="sm" 
+              variant="contact"
+              onClick={() => handleContact(request)}
+            >
+              <MessageCircle size={16} />
+              {language === "it" ? "Contatta" : "Contact"}
+            </Button>
+            <Button 
+              size="sm" 
+              className="bg-solvy-blue hover:bg-solvy-blue/90"
+              onClick={() => handleOfferHelp(request)}
+            >
+              {language === "it" ? "Offri aiuto" : "Offer help"}
+            </Button>
+          </div>
         </CardFooter>
       </Card>
     ));
@@ -478,55 +503,94 @@ const Dashboard = () => {
                   <h3 className={`font-medium mb-2 ${darkMode ? "text-white" : ""}`}>
                     {language === "it" ? "La tua offerta" : "Your offer"}
                   </h3>
+                  
                   <div className="space-y-4 text-sm">
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
-                          {language === "it" ? "Tariffa oraria:" : "Hourly rate:"}
-                        </span>
-                        <span className="font-medium">€{hourlyRate}</span>
-                      </div>
-                      <Slider 
-                        defaultValue={[hourlyRate]} 
-                        min={15} 
-                        max={50} 
-                        step={5}
-                        onValueChange={(value) => setHourlyRate(value[0])}
-                        className={darkMode ? "py-2" : "py-2"}
+                    <div className="flex items-center justify-between">
+                      <span className={darkMode ? "text-gray-300" : "text-gray-700"}>
+                        {language === "it" ? "Prezzo fisso:" : "Fixed price:"}
+                      </span>
+                      <Switch 
+                        checked={isFixedPrice} 
+                        onCheckedChange={setIsFixedPrice} 
                       />
-                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>€15</span>
-                        <span>€50</span>
-                      </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
-                          {language === "it" ? "Durata stimata:" : "Estimated duration:"}
-                        </span>
-                        <span className="font-medium">
-                          {estimatedHours === 1 
-                            ? (language === "it" ? "1 ora" : "1 hour") 
-                            : estimatedHours % 1 === 0 
-                              ? `${estimatedHours} ${language === "it" ? "ore" : "hours"}`
-                              : `${estimatedHours} ${language === "it" ? "ore" : "hours"}`
-                          }
-                        </span>
+                    {isFixedPrice ? (
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
+                            {language === "it" ? "Prezzo totale:" : "Total price:"}
+                          </span>
+                          <span className="font-medium">€{fixedPrice}</span>
+                        </div>
+                        <Slider 
+                          defaultValue={[fixedPrice]} 
+                          value={[fixedPrice]}
+                          min={15} 
+                          max={200} 
+                          step={5}
+                          onValueChange={(value) => setFixedPrice(value[0])}
+                          className={darkMode ? "py-2" : "py-2"}
+                        />
+                        <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                          <span>€15</span>
+                          <span>€200</span>
+                        </div>
                       </div>
-                      <Slider 
-                        defaultValue={[estimatedHours]} 
-                        min={0.5} 
-                        max={5} 
-                        step={0.5}
-                        onValueChange={(value) => setEstimatedHours(value[0])}
-                        className={darkMode ? "py-2" : "py-2"}
-                      />
-                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>0.5h</span>
-                        <span>5h</span>
-                      </div>
-                    </div>
+                    ) : (
+                      <>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
+                              {language === "it" ? "Tariffa oraria:" : "Hourly rate:"}
+                            </span>
+                            <span className="font-medium">€{hourlyRate}</span>
+                          </div>
+                          <Slider 
+                            defaultValue={[hourlyRate]} 
+                            value={[hourlyRate]}
+                            min={15} 
+                            max={50} 
+                            step={5}
+                            onValueChange={(value) => setHourlyRate(value[0])}
+                            className={darkMode ? "py-2" : "py-2"}
+                          />
+                          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                            <span>€15</span>
+                            <span>€50</span>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
+                              {language === "it" ? "Durata stimata:" : "Estimated duration:"}
+                            </span>
+                            <span className="font-medium">
+                              {estimatedHours === 1 
+                                ? (language === "it" ? "1 ora" : "1 hour") 
+                                : estimatedHours % 1 === 0 
+                                  ? `${estimatedHours} ${language === "it" ? "ore" : "hours"}`
+                                  : `${estimatedHours} ${language === "it" ? "ore" : "hours"}`
+                              }
+                            </span>
+                          </div>
+                          <Slider 
+                            defaultValue={[estimatedHours]} 
+                            value={[estimatedHours]}
+                            min={0.5} 
+                            max={5} 
+                            step={0.5}
+                            onValueChange={(value) => setEstimatedHours(value[0])}
+                            className={darkMode ? "py-2" : "py-2"}
+                          />
+                          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                            <span>0.5h</span>
+                            <span>5h</span>
+                          </div>
+                        </div>
+                      </>
+                    )}
                     
                     <div className="border-t border-gray-200 dark:border-gray-600 my-2 pt-2"></div>
                     <div className="flex justify-between font-medium">
@@ -547,7 +611,7 @@ const Dashboard = () => {
               </div>
             )}
             
-            <DialogFooter className="flex-col sm:flex-col gap-2 mt-4">
+            <DialogFooter className="flex-col sm:flex-col gap-2 mt-2">
               <Button 
                 onClick={handleConfirm}
                 className="w-full bg-solvy-blue hover:bg-solvy-blue/90"
@@ -570,3 +634,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
