@@ -3,17 +3,23 @@ import { useEffect, useState } from "react";
 
 export function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
-
+  
   useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
+    // Initial check for SSR compatibility
+    if (typeof window !== 'undefined') {
+      const media = window.matchMedia(query);
       setMatches(media.matches);
+      
+      // Add listener for subsequent changes
+      const listener = () => setMatches(media.matches);
+      media.addEventListener("change", listener);
+      
+      // Clean up
+      return () => media.removeEventListener("change", listener);
     }
-
-    const listener = () => setMatches(media.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [matches, query]);
+    
+    return undefined;
+  }, [query]);
 
   return matches;
 }
