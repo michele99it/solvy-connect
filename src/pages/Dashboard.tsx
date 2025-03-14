@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -13,8 +12,10 @@ import { toast } from "@/components/ui/use-toast";
 import { useAppContext } from "@/contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 import FakeMap from "@/components/FakeMap";
+import { Slider } from "@/components/ui/slider";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 
-// Dati di esempio
 const requestsData = [
   {
     id: 1,
@@ -66,7 +67,6 @@ const requestsData = [
   }
 ];
 
-// Dati recenti di esempio
 const recentRequestsData = [
   {
     id: 4,
@@ -102,7 +102,6 @@ const recentRequestsData = [
   }
 ];
 
-// Dati popolari di esempio
 const popularRequestsData = [
   {
     id: 6,
@@ -138,7 +137,6 @@ const popularRequestsData = [
   }
 ];
 
-// Dati degli solver sulla mappa
 const solversData = [
   {
     id: 1,
@@ -188,11 +186,19 @@ const Dashboard = () => {
   const [selectedSolver, setSelectedSolver] = useState<typeof solversData[0] | null>(null);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
+  const [hourlyRate, setHourlyRate] = useState(30);
+  const [estimatedHours, setEstimatedHours] = useState(1);
   
   const navigate = useNavigate();
   const { darkMode, language } = useAppContext();
   
-  // Immagina che questo sia il nome dell'utente recuperato dal backend
+  const form = useForm({
+    defaultValues: {
+      hourlyRate: 30,
+      hours: 1
+    }
+  });
+  
   const userName = "Mario";
   
   const handleSolverClick = (solver: typeof solversData[0]) => {
@@ -203,13 +209,29 @@ const Dashboard = () => {
     setSelectedSolver(null);
   };
 
-  // Handle offering help for a request
+  const calculateEstimatedTotal = () => {
+    return hourlyRate * estimatedHours;
+  };
+
   const handleOfferHelp = (request: any) => {
     setSelectedRequest(request);
+    
+    let defaultHours = 1;
+    if (request.budget.includes("ora")) {
+      defaultHours = 1;
+    } else if (parseFloat(request.budget.replace(/[^\d.]/g, '')) <= 25) {
+      defaultHours = 1;
+    } else if (parseFloat(request.budget.replace(/[^\d.]/g, '')) <= 40) {
+      defaultHours = 1.5;
+    } else {
+      defaultHours = 2;
+    }
+    
+    setHourlyRate(30);
+    setEstimatedHours(defaultHours);
     setConfirmationOpen(true);
   };
 
-  // Handle confirmation for offering help
   const handleConfirm = () => {
     setConfirmationOpen(false);
     toast({
@@ -221,7 +243,6 @@ const Dashboard = () => {
     navigate("/chat");
   };
 
-  // Funzione per renderizzare le card delle richieste
   const renderRequestCards = (requests: typeof requestsData) => {
     return requests.map((request) => (
       <Card key={request.id} className={`overflow-hidden ${darkMode ? "bg-gray-800 border-gray-700" : ""}`}>
@@ -263,7 +284,7 @@ const Dashboard = () => {
             <div>
               <div className={`text-sm font-medium ${darkMode ? "text-white" : ""}`}>{request.user.name}</div>
               <div className={`flex items-center text-xs ${darkMode ? "text-gray-400" : "text-solvy-gray"}`}>
-                <Star size={12} className="fill-yellow-400 text-yellow-400 mr-1" />
+                <Star size={14} className="fill-yellow-400 text-yellow-400 mr-1" />
                 <span>{request.user.rating} ({request.user.reviews})</span>
               </div>
             </div>
@@ -347,9 +368,7 @@ const Dashboard = () => {
                             <h3 className={`font-medium text-lg ${darkMode ? "text-white" : ""}`}>{selectedSolver.name}</h3>
                             <div className={`flex items-center text-sm ${darkMode ? "text-gray-400" : "text-solvy-gray"}`}>
                               <Star size={14} className="fill-yellow-400 text-yellow-400 mr-1" />
-                              <span>
-                                {selectedSolver.rating} ({selectedSolver.reviews} {language === "it" ? "recensioni" : "reviews"})
-                              </span>
+                              <span>{selectedSolver.rating} ({selectedSolver.reviews} {language === "it" ? "recensioni" : "reviews"})</span>
                             </div>
                           </div>
                         </div>
@@ -408,9 +427,8 @@ const Dashboard = () => {
           </Tabs>
         </div>
 
-        {/* Confirmation modal for offering help */}
         <Dialog open={confirmationOpen} onOpenChange={setConfirmationOpen}>
-          <DialogContent className={`sm:max-w-md ${darkMode ? "bg-gray-800 border-gray-700 text-white" : ""}`}>
+          <DialogContent className={`sm:max-w-md max-h-[90vh] overflow-y-auto ${darkMode ? "bg-gray-800 border-gray-700 text-white" : ""}`}>
             <DialogHeader>
               <DialogTitle className={darkMode ? "text-white" : ""}>
                 {language === "it" ? "Conferma offerta di aiuto" : "Confirm help offer"}
@@ -460,39 +478,60 @@ const Dashboard = () => {
                   <h3 className={`font-medium mb-2 ${darkMode ? "text-white" : ""}`}>
                     {language === "it" ? "La tua offerta" : "Your offer"}
                   </h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
-                        {language === "it" ? "Tariffa oraria:" : "Hourly rate:"}
-                      </span>
-                      <span className="font-medium">€30</span>
+                  <div className="space-y-4 text-sm">
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
+                          {language === "it" ? "Tariffa oraria:" : "Hourly rate:"}
+                        </span>
+                        <span className="font-medium">€{hourlyRate}</span>
+                      </div>
+                      <Slider 
+                        defaultValue={[hourlyRate]} 
+                        min={15} 
+                        max={50} 
+                        step={5}
+                        onValueChange={(value) => setHourlyRate(value[0])}
+                        className={darkMode ? "py-2" : "py-2"}
+                      />
+                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <span>€15</span>
+                        <span>€50</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
-                        {language === "it" ? "Durata stimata:" : "Estimated duration:"}
-                      </span>
-                      <span className="font-medium">
-                        {selectedRequest.budget.includes("ora") 
-                          ? "1 ora" 
-                          : selectedRequest.budget.includes("25") 
-                            ? "1 ora" 
-                            : selectedRequest.budget.includes("40") 
-                              ? "1.5 ore" 
-                              : "2 ore"}
-                      </span>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className={darkMode ? "text-gray-400" : "text-gray-500"}>
+                          {language === "it" ? "Durata stimata:" : "Estimated duration:"}
+                        </span>
+                        <span className="font-medium">
+                          {estimatedHours === 1 
+                            ? (language === "it" ? "1 ora" : "1 hour") 
+                            : estimatedHours % 1 === 0 
+                              ? `${estimatedHours} ${language === "it" ? "ore" : "hours"}`
+                              : `${estimatedHours} ${language === "it" ? "ore" : "hours"}`
+                          }
+                        </span>
+                      </div>
+                      <Slider 
+                        defaultValue={[estimatedHours]} 
+                        min={0.5} 
+                        max={5} 
+                        step={0.5}
+                        onValueChange={(value) => setEstimatedHours(value[0])}
+                        className={darkMode ? "py-2" : "py-2"}
+                      />
+                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <span>0.5h</span>
+                        <span>5h</span>
+                      </div>
                     </div>
+                    
                     <div className="border-t border-gray-200 dark:border-gray-600 my-2 pt-2"></div>
                     <div className="flex justify-between font-medium">
                       <span>{language === "it" ? "Totale stimato:" : "Estimated total:"}</span>
-                      <span className="text-solvy-blue">
-                        {selectedRequest.budget.includes("ora") 
-                          ? "€30" 
-                          : selectedRequest.budget.includes("25") 
-                            ? "€30" 
-                            : selectedRequest.budget.includes("40") 
-                              ? "€45" 
-                              : "€60"}
-                      </span>
+                      <span className="text-solvy-blue">€{calculateEstimatedTotal()}</span>
                     </div>
                   </div>
                 </div>
@@ -508,7 +547,7 @@ const Dashboard = () => {
               </div>
             )}
             
-            <DialogFooter className="flex-col sm:flex-col gap-2">
+            <DialogFooter className="flex-col sm:flex-col gap-2 mt-4">
               <Button 
                 onClick={handleConfirm}
                 className="w-full bg-solvy-blue hover:bg-solvy-blue/90"

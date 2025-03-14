@@ -95,7 +95,8 @@ const ChatPage = () => {
   
   const [activeChat, setActiveChat] = useState(chatsData[0]);
   const [message, setMessage] = useState("");
-  const [showChatList, setShowChatList] = useState(!isMobile);
+  // Inizia mostrando sempre la lista delle chat, sia su mobile che desktop
+  const [showChatList, setShowChatList] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
@@ -110,7 +111,10 @@ const ChatPage = () => {
   }, [activeChat.messages]);
   
   useEffect(() => {
-    setShowChatList(!isMobile);
+    // Su desktop, mostra sempre sia la lista che la chat attiva
+    if (!isMobile) {
+      setShowChatList(true);
+    }
   }, [isMobile]);
   
   const sendMessage = () => {
@@ -141,26 +145,13 @@ const ChatPage = () => {
   return (
     <Layout>
       <div className={`flex h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)] rounded-lg overflow-hidden border ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
-        {/* Lista chat */}
-        {showChatList && (
+        {/* Lista chat - sempre visibile su desktop, condizionalmente su mobile */}
+        {(showChatList || !isMobile) && (
           <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col border-r ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
             <div className={`p-4 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
               <h2 className={`font-semibold ${darkMode ? "text-white" : ""}`}>
                 {language === "it" ? "Chat" : "Chats"}
               </h2>
-              {isMobile && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => {
-                    setShowChatList(false);
-                  }}
-                  className={darkMode ? "text-gray-300 hover:text-white" : ""}
-                >
-                  <ArrowLeft size={16} className="mr-1" />
-                  {language === "it" ? "Indietro" : "Back"}
-                </Button>
-              )}
             </div>
             <ScrollArea className="flex-1">
               {chatsData.map((chat) => (
@@ -208,7 +199,7 @@ const ChatPage = () => {
           </div>
         )}
         
-        {/* Area chat */}
+        {/* Area chat - visibile su desktop sempre, su mobile quando showChatList è false */}
         {(!isMobile || !showChatList) && (
           <div className="flex-1 flex flex-col">
             {/* Header chat */}
@@ -249,7 +240,7 @@ const ChatPage = () => {
               </div>
             </div>
             
-            {/* Area messaggi */}
+            {/* Area messaggi - con corretto overflow e massima larghezza */}
             <ScrollArea 
               className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`} 
               ref={scrollAreaRef}
@@ -265,13 +256,13 @@ const ChatPage = () => {
                   >
                     <div 
                       className={cn(
-                        "max-w-[80%] rounded-lg px-4 py-3",
+                        "max-w-[80%] rounded-lg px-4 py-3 break-words",
                         msg.sender === "me" 
                           ? "bg-solvy-blue text-white rounded-br-none" 
                           : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white border rounded-bl-none")
                       )}
                     >
-                      <p>{msg.text}</p>
+                      <p className="whitespace-normal break-words">{msg.text}</p>
                       <p 
                         className={cn(
                           "text-right text-xs mt-1",
