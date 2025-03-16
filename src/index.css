@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -78,6 +79,10 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-poppins font-semibold;
+  }
 }
 
 @font-face {
@@ -91,6 +96,7 @@
 body {
   font-family: 'Inter', sans-serif;
   letter-spacing: -0.01em;
+  background: linear-gradient(180deg, rgba(238,246,255,1) 0%, rgba(246,249,255,1) 100%);
 }
 
 .font-montserrat {
@@ -98,9 +104,55 @@ body {
   letter-spacing: -0.02em;
 }
 
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.01em;
+}
+
 .font-riwaya {
   font-family: '29lt Riwaya Informal', 'Montserrat', sans-serif;
   letter-spacing: -0.02em;
+}
+
+/* Custom curved background for headings or sections */
+.curved-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.curved-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #3a8dff 0%, #439cf8 100%);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  transform: scaleX(1.5);
+  z-index: -1;
+}
+
+.badge-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(66, 153, 225, 0);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(66, 153, 225, 0.5);
+  }
+}
+
+.card-hover-effect {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 @keyframes pulse {
@@ -176,4 +228,74 @@ body {
 
 .nav-icon {
   transition: transform 0.2s ease;
+}
+
+/* Connection effect, representing the inverted S logo concept */
+.connection-line {
+  position: relative;
+}
+
+.connection-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3a8dff, #8b5cf6);
+  z-index: -1;
+  opacity: 0.7;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Card elevation effect */
+.elevation-1 {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.elevation-2 {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.elevation-3 {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.05);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-blue {
+  background: linear-gradient(135deg, #3a8dff 0%, #439cf8 100%);
+}
+
+.bg-gradient-purple {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+}
+
+.bg-gradient-green {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+/* Glass morphism effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }

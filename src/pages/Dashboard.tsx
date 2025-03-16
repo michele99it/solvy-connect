@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, MapPin, Clock, Star, Map as MapIcon, CheckSquare, MessageCircle } from "lucide-react";
+import { Search, MapPin, Clock, Star, Map as MapIcon, CheckSquare, MessageCircle, Briefcase, Zap, Award, ShieldCheck, Sparkles } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 import { useAppContext } from "@/contexts/AppContext";
@@ -263,17 +263,17 @@ const Dashboard = () => {
 
   const renderRequestCards = (requests: typeof requestsData) => {
     return requests.map((request) => (
-      <Card key={request.id} className={`overflow-hidden ${darkMode ? "bg-gray-800 border-gray-700" : ""}`}>
+      <Card key={request.id} className={`overflow-hidden card-hover-effect elevation-1 ${darkMode ? "bg-gray-800 border-gray-700" : "border-gray-200"}`}>
         <CardHeader className="pb-2">
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle className={`text-lg ${darkMode ? "text-white" : ""}`}>{request.title}</CardTitle>
-              <Badge variant="secondary" className="mt-1 bg-blue-100 text-solvy-blue hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300">
+              <CardTitle className={`text-lg font-poppins ${darkMode ? "text-white" : ""}`}>{request.title}</CardTitle>
+              <Badge variant="secondary" className="mt-1 bg-blue-100 text-solvy-blue hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 badge-glow">
                 {request.category}
               </Badge>
             </div>
             <div className="text-right">
-              <span className={`font-bold text-lg text-solvy-blue ${darkMode ? "text-blue-400" : ""}`}>{request.budget}</span>
+              <span className={`font-bold text-lg ${darkMode ? "text-blue-400" : "bg-gradient-to-r from-[#3a8dff] to-[#439cf8] bg-clip-text text-transparent"}`}>{request.budget}</span>
             </div>
           </div>
         </CardHeader>
@@ -292,10 +292,10 @@ const Dashboard = () => {
             </div>
           </div>
         </CardContent>
-        <CardFooter className={`pt-2 border-t ${darkMode ? "border-gray-700" : ""} flex justify-between items-center`}>
+        <CardFooter className={`pt-2 border-t ${darkMode ? "border-gray-700" : "border-gray-200"} flex justify-between items-center`}>
           <div className="flex items-center gap-2">
-            <Avatar className="w-8 h-8">
-              <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
+            <Avatar className="w-8 h-8 ring-2 ring-offset-2 ring-offset-white dark:ring-offset-gray-800 ring-blue-100">
+              <AvatarFallback className="bg-gradient-to-r from-[#3a8dff] to-[#439cf8] text-white">
                 {request.user.name.charAt(0)}
               </AvatarFallback>
             </Avatar>
@@ -322,7 +322,7 @@ const Dashboard = () => {
             </Button>
             <Button 
               size={isMobile ? "xs" : "sm"} 
-              className="bg-solvy-blue hover:bg-solvy-blue/90"
+              variant="solvy-blue"
               onClick={() => handleOfferHelp(request)}
             >
               {language === "it" ? "Offri aiuto" : "Offer help"}
@@ -336,63 +336,92 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-[#439cf8] font-montserrat">
-            {language === "it" ? `Ciao ${userName}, la tua homepage` : `Hello ${userName}, your homepage`}
-          </h1>
-        </div>
-        
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-solvy-gray" size={18} />
-          <Input 
-            className={`pl-10 ${darkMode ? "bg-gray-700 border-gray-600 text-white" : ""}`}
-            placeholder={language === "it" ? "Cerca richieste..." : "Search requests..."}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="bg-gradient-to-r from-[#3a8dff] to-[#439cf8] -mx-4 -mt-6 px-4 py-10 md:py-16 md:-mx-6 md:px-6 rounded-b-[30px] mb-8">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl md:text-3xl font-bold text-white font-poppins drop-shadow-sm">
+              {language === "it" ? `Ciao ${userName}` : `Hello ${userName}`}
+            </h1>
+            <Badge className="bg-white/20 text-white border-none hover:bg-white/30">
+              <Sparkles size={14} className="mr-1 text-yellow-300" />
+              {language === "it" ? "Pro Solver" : "Pro Solver"}
+            </Badge>
+          </div>
+          
+          <p className="text-blue-100 mb-6 mt-1">
+            {language === "it" ? "Trova soluzioni o offri il tuo aiuto" : "Find solutions or offer your help"}
+          </p>
+          
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-solvy-gray" size={18} />
+            <Input 
+              className="pl-10 bg-white border-none shadow-md rounded-lg py-6"
+              placeholder={language === "it" ? "Cerca richieste o competenze..." : "Search requests or skills..."}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
         
         <div className="flex justify-between items-center">
           <Tabs defaultValue={showMap ? "map" : "nearby"} className="w-full" onValueChange={(value) => setShowMap(value === "map")}>
-            <TabsList className={`w-full grid grid-cols-4 ${darkMode ? "bg-gray-800" : ""}`}>
-              <TabsTrigger value="nearby">
+            <TabsList className={`w-full grid grid-cols-4 ${darkMode ? "bg-gray-800" : "bg-white"} p-1 rounded-lg`}>
+              <TabsTrigger value="nearby" className="rounded-md">
                 {language === "it" ? "Vicino a te" : "Nearby"}
               </TabsTrigger>
-              <TabsTrigger value="recent">
+              <TabsTrigger value="recent" className="rounded-md">
                 {language === "it" ? "Recenti" : "Recent"}
               </TabsTrigger>
-              <TabsTrigger value="popular">
+              <TabsTrigger value="popular" className="rounded-md">
                 {language === "it" ? "Popolari" : "Popular"}
               </TabsTrigger>
-              <TabsTrigger value="map" className="flex items-center gap-1">
+              <TabsTrigger value="map" className="flex items-center gap-1 rounded-md">
                 <MapIcon size={16} />
                 <span>{language === "it" ? "Mappa" : "Map"}</span>
               </TabsTrigger>
             </TabsList>
             
-            <TabsContent value="nearby" className="space-y-4 mt-4">
+            <div className="flex flex-wrap gap-3 my-4">
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5">
+                <Briefcase className="mr-1.5 h-3.5 w-3.5" />
+                {language === "it" ? "Lavori domestici" : "Household"}
+              </Badge>
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5">
+                <Zap className="mr-1.5 h-3.5 w-3.5" />
+                {language === "it" ? "Elettronica" : "Electronics"}
+              </Badge>
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5">
+                <Award className="mr-1.5 h-3.5 w-3.5" />
+                {language === "it" ? "Istruzione" : "Education"}
+              </Badge>
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5">
+                <ShieldCheck className="mr-1.5 h-3.5 w-3.5" />
+                {language === "it" ? "Assistenza" : "Assistance"}
+              </Badge>
+            </div>
+            
+            <TabsContent value="nearby" className="space-y-4 mt-2">
               {renderRequestCards(requestsData)}
             </TabsContent>
             
-            <TabsContent value="recent" className="space-y-4 mt-4">
+            <TabsContent value="recent" className="space-y-4 mt-2">
               {renderRequestCards(recentRequestsData)}
             </TabsContent>
             
-            <TabsContent value="popular" className="space-y-4 mt-4">
+            <TabsContent value="popular" className="space-y-4 mt-2">
               {renderRequestCards(popularRequestsData)}
             </TabsContent>
             
-            <TabsContent value="map" className="mt-4">
-              <Card className={`overflow-hidden ${darkMode ? "bg-gray-800 border-gray-700" : ""}`}>
+            <TabsContent value="map" className="mt-2">
+              <Card className={`overflow-hidden elevation-2 ${darkMode ? "bg-gray-800 border-gray-700" : "border-gray-200"}`}>
                 <CardContent className="p-0 relative">
                   <FakeMap solvers={solversData} onSolverClick={handleSolverClick} />
                   
                   {selectedSolver && (
-                    <div className={`absolute bottom-0 left-0 right-0 ${darkMode ? "bg-gray-800" : "bg-white"} p-4 shadow-lg rounded-t-lg animate-slide-up z-50`}>
+                    <div className={`absolute bottom-0 left-0 right-0 ${darkMode ? "bg-gray-800" : "bg-white"} p-4 shadow-lg rounded-t-lg animate-slide-up z-50 elevation-3`}>
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex items-center gap-3">
-                          <Avatar className="w-12 h-12">
-                            <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
+                          <Avatar className="w-12 h-12 ring-2 ring-offset-2 ring-offset-white dark:ring-offset-gray-800 ring-blue-100">
+                            <AvatarFallback className="bg-gradient-to-r from-[#3a8dff] to-[#439cf8] text-white">
                               {selectedSolver.name.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
@@ -424,7 +453,9 @@ const Dashboard = () => {
                               <Badge 
                                 key={index} 
                                 variant="secondary" 
-                                className={darkMode ? "bg-gray-700 text-gray-200" : "bg-blue-50 text-solvy-blue"}
+                                className={darkMode 
+                                  ? "bg-gray-700 text-gray-200" 
+                                  : "bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600"}
                               >
                                 {skill}
                               </Badge>
@@ -436,11 +467,13 @@ const Dashboard = () => {
                           <h4 className={`text-sm font-medium mb-1 ${darkMode ? "text-gray-300" : ""}`}>
                             {language === "it" ? "Tariffa:" : "Rate:"}
                           </h4>
-                          <p className="text-solvy-blue font-bold">{selectedSolver.price}</p>
+                          <p className="bg-gradient-to-r from-[#3a8dff] to-[#439cf8] bg-clip-text text-transparent font-bold">
+                            {selectedSolver.price}
+                          </p>
                         </div>
                         
                         <div className="flex gap-2 pt-2">
-                          <Button className="flex-1 bg-solvy-blue hover:bg-solvy-blue/90">
+                          <Button className="flex-1" variant="contact">
                             {language === "it" ? "Contatta" : "Contact"}
                           </Button>
                           <Button 
@@ -462,7 +495,7 @@ const Dashboard = () => {
         <Dialog open={confirmationOpen} onOpenChange={setConfirmationOpen}>
           <DialogContent className={`sm:max-w-md max-h-[80vh] overflow-y-auto ${darkMode ? "bg-gray-800 border-gray-700 text-white" : ""}`}>
             <DialogHeader>
-              <DialogTitle className={darkMode ? "text-white" : ""}>
+              <DialogTitle className={`${darkMode ? "text-white" : ""} font-poppins`}>
                 {language === "it" ? "Conferma offerta di aiuto" : "Confirm help offer"}
               </DialogTitle>
               <DialogDescription className={darkMode ? "text-gray-400" : ""}>
@@ -474,7 +507,7 @@ const Dashboard = () => {
             
             {selectedRequest && (
               <div className="space-y-4">
-                <div className={`p-4 rounded-lg border ${darkMode ? "bg-gray-700 border-gray-600" : "bg-gray-50"}`}>
+                <div className={`p-4 rounded-lg border ${darkMode ? "bg-gray-700 border-gray-600" : "bg-blue-50/50 border-blue-100"}`}>
                   <h3 className={`font-medium mb-2 ${darkMode ? "text-white" : ""}`}>
                     {language === "it" ? "Dettagli richiesta" : "Request details"}
                   </h3>
@@ -506,7 +539,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 
-                <div className={`p-4 rounded-lg border ${darkMode ? "bg-gray-700 border-gray-600" : "bg-gray-50"}`}>
+                <div className={`p-4 rounded-lg border ${darkMode ? "bg-gray-700 border-gray-600" : "bg-blue-50/50 border-blue-100"}`}>
                   <h3 className={`font-medium mb-2 ${darkMode ? "text-white" : ""}`}>
                     {language === "it" ? "La tua offerta" : "Your offer"}
                   </h3>
@@ -602,12 +635,14 @@ const Dashboard = () => {
                     <div className="border-t border-gray-200 dark:border-gray-600 my-2 pt-2"></div>
                     <div className="flex justify-between font-medium">
                       <span>{language === "it" ? "Totale stimato:" : "Estimated total:"}</span>
-                      <span className="text-solvy-blue">€{calculateEstimatedTotal()}</span>
+                      <span className="bg-gradient-to-r from-[#3a8dff] to-[#439cf8] bg-clip-text text-transparent font-bold">
+                        €{calculateEstimatedTotal()}
+                      </span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex items-center p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-sm">
+                <div className="flex items-center p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-sm">
                   <CheckSquare className="text-solvy-blue mr-2 flex-shrink-0" size={16} />
                   <p className={darkMode ? "text-gray-300" : "text-gray-600"}>
                     {language === "it" 
@@ -621,7 +656,8 @@ const Dashboard = () => {
             <DialogFooter className="flex-col sm:flex-col gap-2 mt-2 pb-2">
               <Button 
                 onClick={handleConfirm}
-                className="w-full bg-solvy-blue hover:bg-solvy-blue/90"
+                className="w-full"
+                variant="solvy-blue"
               >
                 {language === "it" ? "Conferma e contatta" : "Confirm and contact"}
               </Button>
