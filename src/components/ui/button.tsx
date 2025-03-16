@@ -27,6 +27,10 @@ const buttonVariants = cva(
         "glass": "bg-white/20 backdrop-blur-md border border-white/20 text-white hover:bg-white/30 hover:scale-[1.02] active:scale-[0.98] shadow-sm",
         "modern": "bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/20 hover:shadow-blue-600/30 font-medium",
         "accent": "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-purple-500/20 hover:shadow-pink-500/30 font-medium",
+        "soft": "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 hover:scale-[1.02] active:scale-[0.98] border border-blue-100 dark:border-blue-800",
+        "primary-soft": "bg-primary/10 text-primary hover:bg-primary/20 hover:scale-[1.02] active:scale-[0.98] border border-primary/20",
+        "3d": "bg-gradient-to-b from-blue-500 to-blue-600 text-white border-b-4 border-blue-700 hover:from-blue-600 hover:to-blue-700 active:border-b-0 active:border-t-4 active:translate-y-[4px] active:scale-[0.98] shadow-lg shadow-blue-500/20 hover:shadow-blue-600/30",
+        "tech": "bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-size-200 bg-pos-0 hover:bg-pos-100 text-white hover:scale-[1.02] active:scale-[0.98] shadow-md transition-all duration-500 shadow-blue-300/30 hover:shadow-blue-400/40",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -35,6 +39,7 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
         xs: "h-7 text-xs rounded-md px-2 py-1", // Extra small size for mobile
         pill: "h-9 rounded-full px-4 py-2", // Pill shaped button
+        "pill-lg": "h-11 rounded-full px-6 py-2.5 text-base", // Large pill shaped button
       },
     },
     defaultVariants: {

@@ -143,8 +143,10 @@ const ChatPage = () => {
   return (
     <Layout>
       <div className={`flex h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)] rounded-xl overflow-hidden shadow-lg ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border"}`}>
+        {/* Chat list sidebar */}
         {(showChatList || !isMobile) && (
           <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col border-r ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
+            {/* Chat list header */}
             <div className={`p-4 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
               <h2 className={`font-semibold ${darkMode ? "text-white" : ""}`}>
                 {language === "it" ? "Messaggi" : "Messages"}
@@ -157,12 +159,16 @@ const ChatPage = () => {
                 {language === "it" ? "Filtri" : "Filters"}
               </Button>
             </div>
+            
+            {/* Search bar */}
             <div className="p-3">
               <Input 
                 placeholder={language === "it" ? "Cerca una chat..." : "Search chats..."}
                 className={`${darkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-gray-50"} rounded-full`}
               />
             </div>
+            
+            {/* Chat list */}
             <ScrollArea className="flex-1">
               {chatsData.map((chat) => (
                 <div 
@@ -180,6 +186,7 @@ const ChatPage = () => {
                     }
                   }}
                 >
+                  {/* Avatar */}
                   <div className="relative">
                     <Avatar className="border-2 border-transparent">
                       <AvatarFallback className={activeChat.id === chat.id 
@@ -193,6 +200,8 @@ const ChatPage = () => {
                       <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></span>
                     )}
                   </div>
+                  
+                  {/* Chat preview */}
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-center mb-1">
                       <h3 className={`font-medium truncate ${darkMode ? "text-white" : ""}`}>
@@ -212,8 +221,10 @@ const ChatPage = () => {
           </div>
         )}
         
+        {/* Chat content area */}
         {(!isMobile || !showChatList) && (
           <div className="flex-1 flex flex-col">
+            {/* Chat header */}
             <div className={`flex items-center justify-between p-4 border-b ${darkMode ? "border-gray-700" : ""}`}>
               <div className="flex items-center gap-3">
                 {isMobile && (
@@ -290,6 +301,7 @@ const ChatPage = () => {
               </div>
             </div>
             
+            {/* Chat messages */}
             <ScrollArea 
               className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`} 
               ref={scrollAreaRef}
@@ -301,6 +313,7 @@ const ChatPage = () => {
                   </div>
                 </div>
                 
+                {/* Message bubbles - Fixed overflow issue here */}
                 {activeChat.messages.map((msg) => (
                   <div 
                     key={msg.id}
@@ -310,7 +323,7 @@ const ChatPage = () => {
                     )}
                   >
                     {msg.sender !== "me" && (
-                      <Avatar className="h-8 w-8 mr-2 mt-1 hidden sm:inline-flex">
+                      <Avatar className="h-8 w-8 mr-2 mt-1 hidden sm:inline-flex flex-shrink-0">
                         <AvatarFallback className="text-xs bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
                           {activeChat.user.name.charAt(0)}
                         </AvatarFallback>
@@ -318,13 +331,13 @@ const ChatPage = () => {
                     )}
                     <div 
                       className={cn(
-                        "max-w-[80%] md:max-w-[70%] rounded-2xl px-4 py-3 shadow-sm",
+                        "max-w-[75%] md:max-w-[65%] rounded-2xl px-4 py-3 shadow-sm",
                         msg.sender === "me" 
                           ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-none" 
                           : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white border rounded-bl-none")
                       )}
                     >
-                      <p className="whitespace-normal break-words text-wrap text-sm">{msg.text}</p>
+                      <p className="text-wrap break-words text-sm">{msg.text}</p>
                       <p 
                         className={cn(
                           "text-right text-xs mt-1",
@@ -341,6 +354,7 @@ const ChatPage = () => {
               </div>
             </ScrollArea>
             
+            {/* Message input */}
             <div className={`p-4 border-t ${darkMode ? "border-gray-700" : ""}`}>
               <div className="flex items-center gap-2">
                 <Button 
