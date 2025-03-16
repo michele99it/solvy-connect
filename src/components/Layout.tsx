@@ -9,7 +9,8 @@ import {
   User,
   Bell,
   Settings,
-  Plus
+  Plus,
+  Star
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { 
@@ -45,29 +46,34 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className={cn("flex flex-col min-h-screen", 
-      darkMode ? "bg-gray-900" : "bg-solvy-light"
+      darkMode ? "bg-gray-900" : "bg-gradient-to-b from-white to-blue-50"
     )}>
       {/* Header */}
       <header className={cn(
-        "sticky top-0 z-30 border-b shadow-sm", 
-        darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+        "sticky top-0 z-30 backdrop-blur-md transition-all duration-300", 
+        darkMode 
+          ? "bg-gray-800/90 border-b border-gray-700" 
+          : "bg-white/80 border-b border-gray-200"
       )}>
         <div className="container flex items-center justify-between h-16 px-4 md:px-6">
           <div className="flex items-center gap-2">
-            <Link to="/dashboard" className="flex items-center gap-2">
-              <img 
-                src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
-                alt="Solvy Logo" 
-                className="w-8 h-8 object-contain" 
-              />
-              <span className="text-lg font-bold text-[#439cf8] font-riwaya">Solvy</span>
+            <Link to="/dashboard" className="flex items-center gap-2 transition-transform duration-300 hover:scale-105">
+              <div className="relative">
+                <img 
+                  src="/lovable-uploads/8be73e61-952d-460c-854e-4fede333b960.png" 
+                  alt="Solvy Logo" 
+                  className="w-8 h-8 object-contain" 
+                />
+                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full animate-pulse"></div>
+              </div>
+              <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#439cf8] to-purple-500 font-montserrat">Solvy</span>
             </Link>
           </div>
           
           <div className="flex items-center gap-2">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon" className="relative">
+                <Button variant="ghost" size="icon" className="relative transition-transform duration-200 hover:scale-110">
                   <Bell size={20} />
                   <span className={cn(
                     "absolute top-1 right-1 w-2 h-2 rounded-full",
@@ -76,7 +82,7 @@ const Layout = ({ children }: LayoutProps) => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className={cn(
-                "w-80 p-0", 
+                "w-80 p-0 rounded-xl", 
                 darkMode ? "bg-gray-800 border-gray-700" : "bg-white"
               )}>
                 <div className={cn(
@@ -205,7 +211,7 @@ const Layout = ({ children }: LayoutProps) => {
             
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="transition-transform duration-200 hover:scale-110">
                   <Settings size={20} />
                 </Button>
               </SheetTrigger>
@@ -304,93 +310,115 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
       
+      {/* Bottom Navigation Bar - Modern Version */}
       <div className={cn(
-        "sticky bottom-0 border-t shadow-lg",
-        darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+        "sticky bottom-0 z-40 transition-all duration-300",
+        darkMode ? "bg-gray-800/90 border-t border-gray-700" : "bg-white/90 backdrop-blur-md border-t border-gray-200"
       )}>
-        <div className="container mx-auto px-4 pb-1">
+        <div className="container mx-auto px-4">
           <div className={cn(
-            "flex items-center justify-around rounded-t-xl",
-            darkMode ? "bg-gray-800" : "bg-white"
+            "flex items-center justify-around rounded-t-xl py-1",
+            darkMode ? "bg-gray-800/90" : "bg-white/90"
           )}>
             <Link 
               to="/dashboard" 
               className={cn(
-                "flex flex-col items-center justify-center flex-1 h-14 transition-colors duration-200",
+                "flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all duration-200",
                 isActive("/dashboard") 
-                  ? darkMode ? "text-blue-400" : "text-solvy-blue" 
-                  : darkMode ? "text-gray-400 hover:text-blue-400" : "text-solvy-gray hover:text-solvy-blue"
+                  ? darkMode 
+                    ? "bg-blue-900/30 text-blue-400" 
+                    : "bg-blue-50 text-solvy-blue" 
+                  : darkMode 
+                    ? "text-gray-400 hover:text-blue-400" 
+                    : "text-solvy-gray hover:text-solvy-blue"
               )}
             >
               <Home 
-                size={20} 
+                size={22} 
                 className={cn(
-                  isActive("/dashboard") ? "nav-icon-active" : "nav-icon"
+                  "transition-all",
+                  isActive("/dashboard") 
+                    ? "text-current" 
+                    : "text-current"
                 )} 
               />
-              <span className="text-xs mt-1">{translations.home}</span>
+              <span className="text-xs mt-1 font-medium">{translations.home}</span>
             </Link>
             <Link 
               to="/search" 
               className={cn(
-                "flex flex-col items-center justify-center flex-1 h-14 transition-colors duration-200",
+                "flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all duration-200",
                 isActive("/search") 
-                  ? darkMode ? "text-blue-400" : "text-solvy-blue" 
-                  : darkMode ? "text-gray-400 hover:text-blue-400" : "text-solvy-gray hover:text-solvy-blue"
+                  ? darkMode 
+                    ? "bg-blue-900/30 text-blue-400" 
+                    : "bg-blue-50 text-solvy-blue" 
+                  : darkMode 
+                    ? "text-gray-400 hover:text-blue-400" 
+                    : "text-solvy-gray hover:text-solvy-blue"
               )}
             >
               <Search 
-                size={20}
-                className={cn(
-                  isActive("/search") ? "nav-icon-active" : "nav-icon"
-                )}
+                size={22}
+                className="transition-all"
               />
-              <span className="text-xs mt-1">{translations.search}</span>
+              <span className="text-xs mt-1 font-medium">{translations.search}</span>
             </Link>
             <Link 
               to="/new" 
-              className="flex flex-col items-center justify-center flex-1 h-14"
+              className="flex flex-col items-center relative"
             >
               <div className={cn(
-                "flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors duration-200",
-                darkMode ? "bg-blue-500 hover:bg-blue-600" : "bg-solvy-blue hover:bg-solvy-blue/90"
+                "flex items-center justify-center w-12 h-12 rounded-full text-white shadow-lg transition-transform duration-200 -mt-6 mb-1",
+                darkMode 
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-blue-500/20" 
+                  : "bg-gradient-to-r from-[#439cf8] to-purple-500 hover:shadow-blue-500/30"
               )}>
-                <Plus size={20} />
+                <Plus size={24} />
               </div>
+              <span className={cn(
+                "text-xs font-medium",
+                darkMode ? "text-gray-400" : "text-solvy-gray"
+              )}>
+                {translations.create || "New"}
+              </span>
             </Link>
             <Link 
               to="/chat" 
               className={cn(
-                "flex flex-col items-center justify-center flex-1 h-14 transition-colors duration-200",
+                "flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all duration-200",
                 isActive("/chat") 
-                  ? darkMode ? "text-blue-400" : "text-solvy-blue" 
-                  : darkMode ? "text-gray-400 hover:text-blue-400" : "text-solvy-gray hover:text-solvy-blue"
+                  ? darkMode 
+                    ? "bg-blue-900/30 text-blue-400" 
+                    : "bg-blue-50 text-solvy-blue" 
+                  : darkMode 
+                    ? "text-gray-400 hover:text-blue-400" 
+                    : "text-solvy-gray hover:text-solvy-blue"
               )}
             >
               <MessageSquare 
-                size={20}
-                className={cn(
-                  isActive("/chat") ? "nav-icon-active" : "nav-icon"
-                )}
+                size={22}
+                className="transition-all"
               />
-              <span className="text-xs mt-1">{translations.chat}</span>
+              <span className="text-xs mt-1 font-medium">{translations.chat}</span>
             </Link>
             <Link 
               to="/profile" 
               className={cn(
-                "flex flex-col items-center justify-center flex-1 h-14 transition-colors duration-200",
+                "flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all duration-200",
                 isActive("/profile") 
-                  ? darkMode ? "text-blue-400" : "text-solvy-blue" 
-                  : darkMode ? "text-gray-400 hover:text-blue-400" : "text-solvy-gray hover:text-solvy-blue"
+                  ? darkMode 
+                    ? "bg-blue-900/30 text-blue-400" 
+                    : "bg-blue-50 text-solvy-blue" 
+                  : darkMode 
+                    ? "text-gray-400 hover:text-blue-400" 
+                    : "text-solvy-gray hover:text-solvy-blue"
               )}
             >
               <User 
-                size={20}
-                className={cn(
-                  isActive("/profile") ? "nav-icon-active" : "nav-icon"
-                )}
+                size={22}
+                className="transition-all"
               />
-              <span className="text-xs mt-1">{translations.profile}</span>
+              <span className="text-xs mt-1 font-medium">{translations.profile}</span>
             </Link>
           </div>
         </div>
