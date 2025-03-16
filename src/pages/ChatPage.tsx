@@ -1,14 +1,16 @@
+
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, MoreVertical, Paperclip, ArrowLeft, Image } from "lucide-react";
+import { Send, MoreVertical, Paperclip, ArrowLeft, Image, Phone, VideoIcon, InfoIcon } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useAppContext } from "@/contexts/AppContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Badge } from "@/components/ui/badge";
 
 const chatsData = [
   {
@@ -17,7 +19,8 @@ const chatsData = [
       name: "Giulia Verdi",
       image: "",
       online: true,
-      lastActive: "Online"
+      lastActive: "Online",
+      skills: ["Matematica", "Fisica", "Chimica"]
     },
     messages: [
       {
@@ -46,7 +49,8 @@ const chatsData = [
       name: "Luca Rossi",
       image: "",
       online: false,
-      lastActive: "2 ore fa"
+      lastActive: "2 ore fa",
+      skills: ["Informatica", "Elettronica"]
     },
     messages: [
       {
@@ -69,7 +73,8 @@ const chatsData = [
       name: "Marco Bianchi",
       image: "",
       online: false,
-      lastActive: "5 ore fa"
+      lastActive: "5 ore fa",
+      skills: ["Traslochi", "Montaggio mobili"]
     },
     messages: [
       {
@@ -137,13 +142,26 @@ const ChatPage = () => {
   
   return (
     <Layout>
-      <div className={`flex h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)] rounded-lg overflow-hidden border ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
+      <div className={`flex h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)] rounded-xl overflow-hidden shadow-lg ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border"}`}>
         {(showChatList || !isMobile) && (
           <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col border-r ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
             <div className={`p-4 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
               <h2 className={`font-semibold ${darkMode ? "text-white" : ""}`}>
-                {language === "it" ? "Chat" : "Chats"}
+                {language === "it" ? "Messaggi" : "Messages"}
               </h2>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className={darkMode ? "text-gray-300 hover:text-white hover:bg-gray-700" : "text-gray-500 hover:text-gray-900"}
+              >
+                {language === "it" ? "Filtri" : "Filters"}
+              </Button>
+            </div>
+            <div className="p-3">
+              <Input 
+                placeholder={language === "it" ? "Cerca una chat..." : "Search chats..."}
+                className={`${darkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-gray-50"} rounded-full`}
+              />
             </div>
             <ScrollArea className="flex-1">
               {chatsData.map((chat) => (
@@ -152,7 +170,7 @@ const ChatPage = () => {
                   className={cn(
                     "flex items-center gap-3 p-4 cursor-pointer transition-colors",
                     activeChat.id === chat.id 
-                      ? (darkMode ? "bg-gray-700" : "bg-blue-50") 
+                      ? (darkMode ? "bg-gray-700" : "bg-blue-50/80") 
                       : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"),
                   )}
                   onClick={() => {
@@ -163,25 +181,28 @@ const ChatPage = () => {
                   }}
                 >
                   <div className="relative">
-                    <Avatar>
-                      <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
+                    <Avatar className="border-2 border-transparent">
+                      <AvatarFallback className={activeChat.id === chat.id 
+                        ? "bg-gradient-to-br from-blue-500 to-purple-500 text-white"
+                        : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                      }>
                         {chat.user.name.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     {chat.user.online && (
-                      <span className="absolute bottom-0 right-0 w-3 h-3 bg-solvy-green rounded-full border-2 border-white dark:border-gray-800"></span>
+                      <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></span>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center mb-1">
                       <h3 className={`font-medium truncate ${darkMode ? "text-white" : ""}`}>
                         {chat.user.name}
                       </h3>
-                      <span className={`text-xs ${darkMode ? "text-gray-400" : "text-solvy-gray"}`}>
+                      <span className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
                         {chat.messages[chat.messages.length - 1].time}
                       </span>
                     </div>
-                    <p className={`text-sm truncate ${darkMode ? "text-gray-400" : "text-solvy-gray"}`}>
+                    <p className={`text-sm truncate ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
                       {chat.messages[chat.messages.length - 1].text}
                     </p>
                   </div>
@@ -205,27 +226,66 @@ const ChatPage = () => {
                     <ArrowLeft size={18} />
                   </Button>
                 )}
-                <Avatar>
-                  <AvatarFallback className="bg-solvy-blue/10 text-solvy-blue">
+                <Avatar className="border-2 border-transparent">
+                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
                     {activeChat.user.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className={`font-medium ${darkMode ? "text-white" : ""}`}>
-                    {activeChat.user.name}
-                  </h3>
-                  <p className={`text-xs ${darkMode ? "text-gray-400" : "text-solvy-gray"}`}>
-                    {activeChat.user.lastActive}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <h3 className={`font-medium ${darkMode ? "text-white" : ""}`}>
+                      {activeChat.user.name}
+                    </h3>
+                    {activeChat.user.online && (
+                      <Badge variant="outline" className="text-xs py-0 h-5 font-normal bg-green-500/10 text-green-500 border-green-500/20">
+                        {language === "it" ? "Online" : "Online"}
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex gap-1 mt-0.5">
+                    {activeChat.user.skills.slice(0, 2).map((skill, index) => (
+                      <Badge key={index} variant="secondary" className="text-xs py-0 h-5 font-normal">
+                        {skill}
+                      </Badge>
+                    ))}
+                    {activeChat.user.skills.length > 2 && (
+                      <Badge variant="outline" className="text-xs py-0 h-5 font-normal">
+                        +{activeChat.user.skills.length - 2}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className={darkMode ? "text-gray-300" : "text-solvy-gray"}
+                  className={cn(
+                    "rounded-full", 
+                    darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
+                  )}
                 >
-                  <MoreVertical size={18} />
+                  <Phone size={18} />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className={cn(
+                    "rounded-full", 
+                    darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
+                  )}
+                >
+                  <VideoIcon size={18} />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className={cn(
+                    "rounded-full", 
+                    darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
+                  )}
+                >
+                  <InfoIcon size={18} />
                 </Button>
               </div>
             </div>
@@ -234,7 +294,13 @@ const ChatPage = () => {
               className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`} 
               ref={scrollAreaRef}
             >
-              <div className="space-y-4">
+              <div className="space-y-4 px-4">
+                <div className="flex justify-center">
+                  <div className={`px-4 py-1 rounded-full text-xs ${darkMode ? "bg-gray-800 text-gray-400" : "bg-gray-200 text-gray-500"}`}>
+                    {language === "it" ? "Oggi" : "Today"}
+                  </div>
+                </div>
+                
                 {activeChat.messages.map((msg) => (
                   <div 
                     key={msg.id}
@@ -243,21 +309,28 @@ const ChatPage = () => {
                       msg.sender === "me" ? "justify-end" : "justify-start"
                     )}
                   >
+                    {msg.sender !== "me" && (
+                      <Avatar className="h-8 w-8 mr-2 mt-1 hidden sm:inline-flex">
+                        <AvatarFallback className="text-xs bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                          {activeChat.user.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                    )}
                     <div 
                       className={cn(
-                        "max-w-[80%] rounded-lg px-4 py-3 break-words text-wrap",
+                        "max-w-[80%] md:max-w-[70%] rounded-2xl px-4 py-3 shadow-sm",
                         msg.sender === "me" 
-                          ? "bg-solvy-blue text-white rounded-br-none" 
+                          ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-none" 
                           : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white border rounded-bl-none")
                       )}
                     >
-                      <p className="whitespace-normal break-words text-wrap text-left">{msg.text}</p>
+                      <p className="whitespace-normal break-words text-wrap text-sm">{msg.text}</p>
                       <p 
                         className={cn(
                           "text-right text-xs mt-1",
                           msg.sender === "me" 
                             ? "text-blue-100" 
-                            : (darkMode ? "text-gray-400" : "text-solvy-gray")
+                            : (darkMode ? "text-gray-400" : "text-gray-400")
                         )}
                       >
                         {msg.time}
@@ -274,7 +347,10 @@ const ChatPage = () => {
                   onClick={handleAttachClick}
                   size="icon" 
                   variant="ghost"
-                  className={`${darkMode ? "text-gray-300 hover:text-white" : "text-solvy-gray hover:text-solvy-blue"} transition-colors`}
+                  className={cn(
+                    "rounded-full", 
+                    darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
+                  )}
                   aria-label={language === "it" ? "Allega file" : "Attach file"}
                 >
                   <Paperclip size={18} />
@@ -290,7 +366,10 @@ const ChatPage = () => {
                 <Button 
                   size="icon" 
                   variant="ghost"
-                  className={`${darkMode ? "text-gray-300 hover:text-white" : "text-solvy-gray hover:text-solvy-blue"} transition-colors`}
+                  className={cn(
+                    "rounded-full", 
+                    darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
+                  )}
                   aria-label={language === "it" ? "Allega immagine" : "Attach image"}
                   onClick={handleAttachClick}
                 >
@@ -302,12 +381,21 @@ const ChatPage = () => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                  className={`flex-1 ${darkMode ? "bg-gray-700 border-gray-600 text-white" : ""}`}
+                  className={cn(
+                    "flex-1 rounded-full",
+                    darkMode ? "bg-gray-700 border-gray-600 text-white focus:ring-blue-500 focus:border-blue-600" : "bg-gray-50 focus:ring-blue-400 focus:border-blue-500"
+                  )}
                 />
                 <Button 
                   onClick={sendMessage}
                   size="icon" 
-                  className="bg-solvy-blue hover:bg-solvy-blue/90 transition-colors"
+                  disabled={!message.trim()}
+                  className={cn(
+                    "rounded-full",
+                    !message.trim() 
+                      ? (darkMode ? "bg-gray-700 text-gray-400" : "bg-gray-200 text-gray-400") 
+                      : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                  )}
                   aria-label={language === "it" ? "Invia messaggio" : "Send message"}
                 >
                   <Send size={18} />

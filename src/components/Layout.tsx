@@ -64,7 +64,6 @@ const Layout = ({ children }: LayoutProps) => {
                   alt="Solvy Logo" 
                   className="w-8 h-8 object-contain" 
                 />
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full animate-pulse"></div>
               </div>
               <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#439cf8] to-purple-500 font-montserrat">Solvy</span>
             </Link>
@@ -310,20 +309,22 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
       
-      {/* Bottom Navigation Bar - Modern Version */}
+      {/* Bottom Navigation Bar - Modern Version with Glass Effect */}
       <div className={cn(
         "sticky bottom-0 z-40 transition-all duration-300",
-        darkMode ? "bg-gray-800/90 border-t border-gray-700" : "bg-white/90 backdrop-blur-md border-t border-gray-200"
+        darkMode 
+          ? "bg-gray-800/95 border-t border-gray-700" 
+          : "bg-white/95 backdrop-blur-md border-t border-gray-200"
       )}>
         <div className="container mx-auto px-4">
-          <div className={cn(
-            "flex items-center justify-around rounded-t-xl py-1",
-            darkMode ? "bg-gray-800/90" : "bg-white/90"
+          <nav className={cn(
+            "flex justify-around py-2 rounded-t-xl",
+            darkMode ? "bg-gray-800/70" : "bg-white/70"
           )}>
             <Link 
               to="/dashboard" 
               className={cn(
-                "flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all duration-200",
+                "flex flex-col items-center py-2 px-4 rounded-lg transition-all duration-200",
                 isActive("/dashboard") 
                   ? darkMode 
                     ? "bg-blue-900/30 text-blue-400" 
@@ -337,17 +338,16 @@ const Layout = ({ children }: LayoutProps) => {
                 size={22} 
                 className={cn(
                   "transition-all",
-                  isActive("/dashboard") 
-                    ? "text-current" 
-                    : "text-current"
+                  isActive("/dashboard") ? "text-current" : "text-current"
                 )} 
               />
               <span className="text-xs mt-1 font-medium">{translations.home}</span>
             </Link>
+            
             <Link 
               to="/search" 
               className={cn(
-                "flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all duration-200",
+                "flex flex-col items-center py-2 px-4 rounded-lg transition-all duration-200",
                 isActive("/search") 
                   ? darkMode 
                     ? "bg-blue-900/30 text-blue-400" 
@@ -363,29 +363,31 @@ const Layout = ({ children }: LayoutProps) => {
               />
               <span className="text-xs mt-1 font-medium">{translations.search}</span>
             </Link>
+            
             <Link 
               to="/new" 
-              className="flex flex-col items-center relative"
+              className={cn(
+                "flex flex-col items-center py-2 px-4 rounded-lg transition-all duration-200",
+                isActive("/new") 
+                  ? darkMode 
+                    ? "bg-blue-900/30 text-blue-400" 
+                    : "bg-blue-50 text-solvy-blue" 
+                  : darkMode 
+                    ? "text-gray-400 hover:text-blue-400" 
+                    : "text-solvy-gray hover:text-solvy-blue"
+              )}
             >
-              <div className={cn(
-                "flex items-center justify-center w-12 h-12 rounded-full text-white shadow-lg transition-transform duration-200 -mt-6 mb-1",
-                darkMode 
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-blue-500/20" 
-                  : "bg-gradient-to-r from-[#439cf8] to-purple-500 hover:shadow-blue-500/30"
-              )}>
-                <Plus size={24} />
-              </div>
-              <span className={cn(
-                "text-xs font-medium",
-                darkMode ? "text-gray-400" : "text-solvy-gray"
-              )}>
-                {translations.create || "New"}
-              </span>
+              <Plus 
+                size={22}
+                className="transition-all"
+              />
+              <span className="text-xs mt-1 font-medium">{translations.create || "New"}</span>
             </Link>
+            
             <Link 
               to="/chat" 
               className={cn(
-                "flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all duration-200",
+                "flex flex-col items-center py-2 px-4 rounded-lg transition-all duration-200",
                 isActive("/chat") 
                   ? darkMode 
                     ? "bg-blue-900/30 text-blue-400" 
@@ -401,10 +403,11 @@ const Layout = ({ children }: LayoutProps) => {
               />
               <span className="text-xs mt-1 font-medium">{translations.chat}</span>
             </Link>
+            
             <Link 
               to="/profile" 
               className={cn(
-                "flex flex-col items-center justify-center px-2 py-2 rounded-lg transition-all duration-200",
+                "flex flex-col items-center py-2 px-4 rounded-lg transition-all duration-200",
                 isActive("/profile") 
                   ? darkMode 
                     ? "bg-blue-900/30 text-blue-400" 
@@ -420,7 +423,7 @@ const Layout = ({ children }: LayoutProps) => {
               />
               <span className="text-xs mt-1 font-medium">{translations.profile}</span>
             </Link>
-          </div>
+          </nav>
         </div>
       </div>
     </div>

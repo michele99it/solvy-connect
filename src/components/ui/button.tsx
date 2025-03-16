@@ -24,6 +24,9 @@ const buttonVariants = cva(
         "solver": "bg-gradient-to-r from-violet-500 to-purple-500 text-white hover:from-violet-600 hover:to-purple-600 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-purple-300/30 hover:shadow-purple-400/40",
         "premium": "bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-amber-300/30 hover:shadow-amber-400/40",
         "connect": "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-blue-300/30 hover:shadow-purple-300/30",
+        "glass": "bg-white/20 backdrop-blur-md border border-white/20 text-white hover:bg-white/30 hover:scale-[1.02] active:scale-[0.98] shadow-sm",
+        "modern": "bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/20 hover:shadow-blue-600/30 font-medium",
+        "accent": "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-purple-500/20 hover:shadow-pink-500/30 font-medium",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -31,6 +34,7 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         xs: "h-7 text-xs rounded-md px-2 py-1", // Extra small size for mobile
+        pill: "h-9 rounded-full px-4 py-2", // Pill shaped button
       },
     },
     defaultVariants: {

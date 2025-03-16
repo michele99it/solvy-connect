@@ -8,12 +8,16 @@ import { cn } from "@/lib/utils"
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> & {
+    variant?: "default" | "modern" | "glass"
+  }
+>(({ className, children, variant = "default", ...props }, ref) => (
   <NavigationMenuPrimitive.Root
     ref={ref}
     className={cn(
       "relative z-10 flex max-w-max flex-1 items-center justify-center",
+      variant === "modern" && "rounded-full px-2 py-1 bg-white/10 backdrop-blur-md border border-white/10",
+      variant === "glass" && "rounded-xl px-2 py-1 bg-white/20 backdrop-blur-md border border-white/20 shadow-lg",
       className
     )}
     {...props}
@@ -65,12 +69,16 @@ NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName
 
 const NavigationMenuContent = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content> & {
+    variant?: "default" | "modern" | "glass"
+  }
+>(({ className, variant = "default", ...props }, ref) => (
   <NavigationMenuPrimitive.Content
     ref={ref}
     className={cn(
       "left-0 top-0 w-full rounded-lg data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:w-auto",
+      variant === "modern" && "overflow-hidden",
+      variant === "glass" && "overflow-hidden backdrop-blur-md bg-white/20 border border-white/20",
       className
     )}
     {...props}
