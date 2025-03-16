@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -7,7 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, MapPin, Clock, Star, Map as MapIcon, CheckSquare, MessageCircle, Briefcase, Zap, Award, ShieldCheck, Sparkles } from "lucide-react";
+import { 
+  Search, MapPin, Clock, Star, Map as MapIcon, CheckSquare, MessageCircle, 
+  Briefcase, Zap, Award, ShieldCheck, Sparkles, Computer, Home, Tv, 
+  Wrench, Music, BookOpen, Car, PaintBucket, UtensilsCrossed, Smartphone
+} from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 import { useAppContext } from "@/contexts/AppContext";
@@ -18,6 +21,47 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { useIsMobile } from "@/hooks/use-mobile";
+
+const getCategoryIcon = (category: string, size: number = 16) => {
+  switch(category.toLowerCase()) {
+    case 'tecnologia':
+    case 'technology':
+      return <Computer size={size} />;
+    case 'casa':
+    case 'home':
+    case 'household':
+      return <Home size={size} />;
+    case 'elettronica':
+    case 'electronics':
+      return <Tv size={size} />;
+    case 'istruzione':
+    case 'education':
+      return <BookOpen size={size} />;
+    case 'traslochi':
+    case 'moving':
+      return <Briefcase size={size} />;
+    case 'riparazioni':
+    case 'repairs':
+      return <Wrench size={size} />;
+    case 'musica':
+    case 'music':
+      return <Music size={size} />;
+    case 'creatività':
+    case 'creativity':
+      return <PaintBucket size={size} />;
+    case 'esterni':
+    case 'outdoors':
+      return <Car size={size} />;
+    case 'assistenza':
+    case 'assistance':
+      return <ShieldCheck size={size} />;
+    case 'informatica':
+    case 'computers':
+      return <Computer size={size} />;
+    default:
+      return <Zap size={size} />;
+  }
+};
 
 const requestsData = [
   {
@@ -268,7 +312,8 @@ const Dashboard = () => {
           <div className="flex justify-between items-start">
             <div>
               <CardTitle className={`text-lg font-poppins ${darkMode ? "text-white" : ""}`}>{request.title}</CardTitle>
-              <Badge variant="secondary" className="mt-1 bg-blue-100 text-solvy-blue hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 badge-glow">
+              <Badge variant="secondary" className="mt-1 bg-blue-100 text-solvy-blue hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 badge-glow flex items-center gap-1">
+                {getCategoryIcon(request.category)}
                 {request.category}
               </Badge>
             </div>
@@ -381,19 +426,19 @@ const Dashboard = () => {
             </TabsList>
             
             <div className="flex flex-wrap gap-3 my-4">
-              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5">
-                <Briefcase className="mr-1.5 h-3.5 w-3.5" />
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5 flex items-center">
+                <Home className="mr-1.5 h-3.5 w-3.5" />
                 {language === "it" ? "Lavori domestici" : "Household"}
               </Badge>
-              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5">
-                <Zap className="mr-1.5 h-3.5 w-3.5" />
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5 flex items-center">
+                <Tv className="mr-1.5 h-3.5 w-3.5" />
                 {language === "it" ? "Elettronica" : "Electronics"}
               </Badge>
-              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5">
-                <Award className="mr-1.5 h-3.5 w-3.5" />
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5 flex items-center">
+                <BookOpen className="mr-1.5 h-3.5 w-3.5" />
                 {language === "it" ? "Istruzione" : "Education"}
               </Badge>
-              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5">
+              <Badge variant="outline" className="bg-white dark:bg-gray-800 px-3 py-1.5 flex items-center">
                 <ShieldCheck className="mr-1.5 h-3.5 w-3.5" />
                 {language === "it" ? "Assistenza" : "Assistance"}
               </Badge>

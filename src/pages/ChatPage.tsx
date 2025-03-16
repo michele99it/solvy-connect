@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, MoreVertical, Paperclip, ArrowLeft, Image, Phone, VideoIcon, InfoIcon } from "lucide-react";
+import { Send, MoreVertical, Paperclip, Image, Phone, VideoIcon, InfoIcon } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -55,13 +55,13 @@ const chatsData = [
     messages: [
       {
         id: 1,
-        text: "Salve, ho un problema con il mio computer. Potresti aiutarmi?",
+        text: "Salve, ho un problema con il mio computer. Potresti aiutarmi? È un problema piuttosto complesso che richiede una soluzione immediata.",
         sender: "them",
         time: "Ieri"
       },
       {
         id: 2,
-        text: "Certo, mi può descrivere il problema?",
+        text: "Certo, mi può descrivere il problema? Sarei felice di aiutarla a trovare una soluzione adeguata.",
         sender: "me",
         time: "Ieri"
       }
@@ -79,19 +79,25 @@ const chatsData = [
     messages: [
       {
         id: 1,
-        text: "Grazie per l'aiuto con il trasloco! Tutto perfetto.",
+        text: "Grazie per l'aiuto con il trasloco! Tutto perfetto. Sei stato davvero professionale e puntuale, apprezzo molto.",
         sender: "them",
         time: "Lunedì"
       },
       {
         id: 2,
-        text: "Grazie a te! Sono contento che sia andato tutto bene.",
+        text: "Grazie a te! Sono contento che sia andato tutto bene. Se hai bisogno di altro aiuto in futuro, fammi sapere.",
         sender: "me",
         time: "Lunedì"
       }
     ]
   }
 ];
+
+// Function to truncate message text for previews
+const truncateMessage = (text: string, maxLength: number = 60) => {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + "...";
+};
 
 const ChatPage = () => {
   const isMobile = useIsMobile();
@@ -212,7 +218,7 @@ const ChatPage = () => {
                       </span>
                     </div>
                     <p className={`text-sm truncate ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-                      {chat.messages[chat.messages.length - 1].text}
+                      {truncateMessage(chat.messages[chat.messages.length - 1].text)}
                     </p>
                   </div>
                 </div>
@@ -227,16 +233,6 @@ const ChatPage = () => {
             {/* Chat header */}
             <div className={`flex items-center justify-between p-4 border-b ${darkMode ? "border-gray-700" : ""}`}>
               <div className="flex items-center gap-3">
-                {isMobile && (
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={() => setShowChatList(true)}
-                    className={darkMode ? "text-gray-300" : ""}
-                  >
-                    <ArrowLeft size={18} />
-                  </Button>
-                )}
                 <Avatar className="border-2 border-transparent">
                   <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
                     {activeChat.user.name.charAt(0)}
@@ -331,13 +327,13 @@ const ChatPage = () => {
                     )}
                     <div 
                       className={cn(
-                        "max-w-[75%] md:max-w-[65%] rounded-2xl px-4 py-3 shadow-sm",
+                        "max-w-[75%] md:max-w-[65%] rounded-2xl px-4 py-3 shadow-sm break-words",
                         msg.sender === "me" 
                           ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-none" 
                           : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white border rounded-bl-none")
                       )}
                     >
-                      <p className="text-wrap break-words text-sm">{msg.text}</p>
+                      <p className="text-sm break-words">{msg.text}</p>
                       <p 
                         className={cn(
                           "text-right text-xs mt-1",
