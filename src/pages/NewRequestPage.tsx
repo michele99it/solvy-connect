@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,17 +14,46 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import { useAppContext } from "@/contexts/AppContext";
-import { CategorySelect } from "@/components/CategorySelect";
+import CategorySelect from "@/components/CategorySelect"; // Fixed: changed to default import
 import FakeMap from "@/components/FakeMap";
+import { cn } from "@/lib/utils"; // Added: import the cn utility
 
 const NewRequestPage = () => {
   const { darkMode, language } = useAppContext();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<"technology" | "home" | "maintenance" | "education" | "professional" | "shopping" | "transport" | "food" | "pets" | "music" | "art" | "other">("technology");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [budget, setBudget] = useState("");
+  
+  // Add mock data for FakeMap component
+  const mockSolvers = [
+    {
+      id: 1,
+      name: "Mario Rossi",
+      position: { x: 40, y: 60 },
+      rating: 4.8,
+      reviews: 124,
+      skills: ["Riparazioni", "Elettronica"],
+      price: "€30/h",
+      image: ""
+    },
+    {
+      id: 2,
+      name: "Lucia Bianchi",
+      position: { x: 60, y: 30 },
+      rating: 4.6,
+      reviews: 87,
+      skills: ["Idraulica", "Manutenzione"],
+      price: "€35/h",
+      image: ""
+    }
+  ];
+  
+  const handleSolverClick = (solver: any) => {
+    console.log("Selected solver:", solver);
+  };
   
   const handleSubmit = () => {
     console.log("Submitting request:", {
@@ -108,7 +138,10 @@ const NewRequestPage = () => {
                 >
                   {language === "it" ? "Categoria" : "Category"}
                 </label>
-                <CategorySelect onCategoryChange={setCategory} />
+                <CategorySelect 
+                  selectedCategory={category} 
+                  onCategoryChange={(cat) => setCategory(cat)}
+                />
               </div>
             </div>
             
@@ -128,7 +161,7 @@ const NewRequestPage = () => {
                   onChange={(e) => setLocation(e.target.value)}
                   className={darkMode ? "bg-gray-700 border-gray-600 text-white" : ""}
                 />
-                <FakeMap />
+                <FakeMap solvers={mockSolvers} onSolverClick={handleSolverClick} />
               </div>
             </div>
             
