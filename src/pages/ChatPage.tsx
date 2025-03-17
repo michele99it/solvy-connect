@@ -1,3 +1,4 @@
+
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -92,7 +93,8 @@ const chatsData = [
   }
 ];
 
-const truncateMessage = (text: string, maxLength: number = 30) => {
+// This function will handle truncating messages properly regardless of screen size
+const truncateMessage = (text: string, maxLength: number = 20) => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + "...";
 };
@@ -209,7 +211,7 @@ const ChatPage = () => {
                         {chat.messages[chat.messages.length - 1].time}
                       </span>
                     </div>
-                    <p className={`text-sm truncate ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+                    <p className={`text-sm truncate w-full ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
                       {truncateMessage(chat.messages[chat.messages.length - 1].text)}
                     </p>
                   </div>

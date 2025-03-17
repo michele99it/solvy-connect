@@ -50,13 +50,31 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           <CategoryIcon 
             category={category.id} 
             size={18} 
-            bgClassName="w-8 h-8"
+            bgClassName={cn(
+              "w-8 h-8",
+              selectedCategory === category.id
+                ? "bg-blue-100 dark:bg-blue-900/50"
+                : ""
+            )}
           />
           <span className={cn(
-            "text-xs font-medium text-center",
-            darkMode ? "text-gray-300" : "text-gray-700"
+            "text-xs font-medium text-center relative",
+            darkMode ? "text-gray-300" : "text-gray-700",
+            selectedCategory === category.id && "z-10"
           )}>
             {category.name}
+            {selectedCategory === category.id && (
+              <span 
+                className={cn(
+                  "absolute -z-10 left-1/2 -translate-x-1/2 bottom-0 w-full h-6 bg-blue-100 dark:bg-blue-900/20 rounded-full opacity-70",
+                  "transform -translate-y-1"
+                )}
+                style={{ 
+                  width: `${Math.max(category.name.length * 8, 40)}px`,
+                  maxWidth: '120%'
+                }}
+              />
+            )}
           </span>
         </div>
       ))}

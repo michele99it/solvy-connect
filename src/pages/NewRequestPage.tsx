@@ -80,6 +80,63 @@ const NewRequestPage = () => {
           </p>
         </div>
         
+        {/* Network Benefits Section - Moved to top */}
+        <div className={`p-4 rounded-lg ${darkMode ? "bg-gray-800" : "bg-blue-50"} border ${darkMode ? "border-gray-700" : "border-blue-100"}`}>
+          <h3 className={`text-lg font-medium mb-4 ${darkMode ? "text-white" : "text-gray-800"}`}>
+            {language === "it" ? "Vantaggi del Network Solvy" : "Solvy Network Benefits"}
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex items-start gap-3">
+              <div className={`p-2 rounded-full ${darkMode ? "bg-blue-900/30 text-blue-400" : "bg-blue-100 text-blue-600"}`}>
+                <Shield size={20} />
+              </div>
+              <div>
+                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
+                  {language === "it" ? "Professionisti Verificati" : "Verified Professionals"}
+                </h4>
+                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                  {language === "it" 
+                    ? "Tutti i Solvers sono verificati e affidabili" 
+                    : "All Solvers are verified and reliable"}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <div className={`p-2 rounded-full ${darkMode ? "bg-green-900/30 text-green-400" : "bg-green-100 text-green-600"}`}>
+                <Clock4 size={20} />
+              </div>
+              <div>
+                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
+                  {language === "it" ? "Risposte Rapide" : "Quick Responses"}
+                </h4>
+                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                  {language === "it" 
+                    ? "Ricevi offerte entro poche ore" 
+                    : "Get offers within hours"}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <div className={`p-2 rounded-full ${darkMode ? "bg-purple-900/30 text-purple-400" : "bg-purple-100 text-purple-600"}`}>
+                <Award size={20} />
+              </div>
+              <div>
+                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
+                  {language === "it" ? "Garanzia di Qualità" : "Quality Guarantee"}
+                </h4>
+                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                  {language === "it" 
+                    ? "Soddisfatti o rimborsati" 
+                    : "Satisfaction or money back"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <Card className={darkMode ? "bg-gray-800 border-gray-700" : "border-gray-200"}>
           <CardHeader>
             <CardTitle className={`text-lg ${darkMode ? "text-white" : ""}`}>
@@ -249,62 +306,6 @@ const NewRequestPage = () => {
             </Button>
           </CardFooter>
         </Card>
-        
-        <div className={`mt-6 p-4 rounded-lg ${darkMode ? "bg-gray-800" : "bg-blue-50"} border ${darkMode ? "border-gray-700" : "border-blue-100"}`}>
-          <h3 className={`text-lg font-medium mb-4 ${darkMode ? "text-white" : "text-gray-800"}`}>
-            {language === "it" ? "Vantaggi del Network Solvy" : "Solvy Network Benefits"}
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-start gap-3">
-              <div className={`p-2 rounded-full ${darkMode ? "bg-blue-900/30 text-blue-400" : "bg-blue-100 text-blue-600"}`}>
-                <Shield size={20} />
-              </div>
-              <div>
-                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
-                  {language === "it" ? "Professionisti Verificati" : "Verified Professionals"}
-                </h4>
-                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-                  {language === "it" 
-                    ? "Tutti i Solvers sono verificati e affidabili" 
-                    : "All Solvers are verified and reliable"}
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-3">
-              <div className={`p-2 rounded-full ${darkMode ? "bg-green-900/30 text-green-400" : "bg-green-100 text-green-600"}`}>
-                <Clock4 size={20} />
-              </div>
-              <div>
-                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
-                  {language === "it" ? "Risposte Rapide" : "Quick Responses"}
-                </h4>
-                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-                  {language === "it" 
-                    ? "Ricevi offerte entro poche ore" 
-                    : "Get offers within hours"}
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-3">
-              <div className={`p-2 rounded-full ${darkMode ? "bg-purple-900/30 text-purple-400" : "bg-purple-100 text-purple-600"}`}>
-                <Award size={20} />
-              </div>
-              <div>
-                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
-                  {language === "it" ? "Garanzia di Qualità" : "Quality Guarantee"}
-                </h4>
-                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-                  {language === "it" 
-                    ? "Soddisfatti o rimborsati" 
-                    : "Satisfaction or money back"}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </Layout>
   );
