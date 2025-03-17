@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, ThumbsUp, BookOpen, Star, Clock, Eye, ArrowRight, PlayCircle, CheckCircle2, Lightbulb, Tool, Zap } from "lucide-react";
+import { Search, ThumbsUp, BookOpen, Star, Clock, Eye, ArrowRight, PlayCircle, CheckCircle2, Lightbulb, Wrench, Zap } from "lucide-react";
 import { useAppContext } from "@/contexts/AppContext";
 import { cn } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
@@ -420,7 +420,7 @@ const TutorialPage = () => {
               <Card className={darkMode ? "bg-gray-800 border-gray-700" : ""}>
                 <CardHeader className="pb-2">
                   <div className="mb-2">
-                    <Tool size={20} className="text-blue-500" />
+                    <Wrench size={20} className="text-blue-500" />
                   </div>
                   <CardTitle className="text-base">
                     {language === "it" ? "Manutenzione preventiva" : "Preventive maintenance"}
