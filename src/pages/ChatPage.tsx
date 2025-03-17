@@ -92,8 +92,7 @@ const chatsData = [
   }
 ];
 
-// Function to truncate message text for previews
-const truncateMessage = (text: string, maxLength: number = 45) => {
+const truncateMessage = (text: string, maxLength: number = 30) => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + "...";
 };
@@ -148,10 +147,8 @@ const ChatPage = () => {
   return (
     <Layout>
       <div className={`flex h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)] rounded-xl overflow-hidden shadow-lg ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border"}`}>
-        {/* Chat list sidebar */}
         {(showChatList || !isMobile) && (
           <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col border-r ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
-            {/* Chat list header */}
             <div className={`p-4 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
               <h2 className={`font-semibold ${darkMode ? "text-white" : ""}`}>
                 {language === "it" ? "Messaggi" : "Messages"}
@@ -165,7 +162,6 @@ const ChatPage = () => {
               </Button>
             </div>
             
-            {/* Search bar */}
             <div className="p-3">
               <Input 
                 placeholder={language === "it" ? "Cerca una chat..." : "Search chats..."}
@@ -173,7 +169,6 @@ const ChatPage = () => {
               />
             </div>
             
-            {/* Chat list */}
             <ScrollArea className="flex-1">
               {chatsData.map((chat) => (
                 <div 
@@ -191,7 +186,6 @@ const ChatPage = () => {
                     }
                   }}
                 >
-                  {/* Avatar */}
                   <div className="relative">
                     <Avatar className="border-2 border-transparent">
                       <AvatarFallback className={activeChat.id === chat.id 
@@ -206,7 +200,6 @@ const ChatPage = () => {
                     )}
                   </div>
                   
-                  {/* Chat preview */}
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-center mb-1">
                       <h3 className={`font-medium truncate ${darkMode ? "text-white" : ""}`}>
@@ -226,10 +219,8 @@ const ChatPage = () => {
           </div>
         )}
         
-        {/* Chat content area */}
         {(!isMobile || !showChatList) && (
           <div className="flex-1 flex flex-col">
-            {/* Chat header */}
             <div className={`flex items-center justify-between p-4 border-b ${darkMode ? "border-gray-700" : ""}`}>
               <div className="flex items-center gap-3">
                 <Avatar className="border-2 border-transparent">
@@ -276,7 +267,6 @@ const ChatPage = () => {
               </div>
             </div>
             
-            {/* Chat messages */}
             <ScrollArea 
               className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`} 
               ref={scrollAreaRef}
@@ -288,7 +278,6 @@ const ChatPage = () => {
                   </div>
                 </div>
                 
-                {/* Message bubbles - Fixed mobile layout and overflow issues */}
                 {activeChat.messages.map((msg) => (
                   <div 
                     key={msg.id}
@@ -329,7 +318,6 @@ const ChatPage = () => {
               </div>
             </ScrollArea>
             
-            {/* Message input */}
             <div className={`p-3 border-t ${darkMode ? "border-gray-700" : ""}`}>
               <div className="flex items-center gap-2">
                 <Button 
