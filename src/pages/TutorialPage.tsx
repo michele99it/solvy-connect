@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,7 @@ const TutorialPage = () => {
       description: language === "it" 
         ? "Una guida passo passo per sostituire lo schermo del tuo smartphone danneggiato con strumenti di base." 
         : "A step-by-step guide to replacing your damaged smartphone screen with basic tools.",
-      thumbnailUrl: "/lovable-uploads/f7de0150-f10f-486a-ad62-18ef12b58e7b.png",
+      thumbnailUrl: "https://source.unsplash.com/random/800x450/?smartphone",
       duration: "15:30",
       author: "Marco T.",
       authorImage: "",
@@ -65,7 +66,7 @@ const TutorialPage = () => {
       description: language === "it" 
         ? "Scopri come individuare e riparare una perdita d'acqua sotto il lavandino senza chiamare un idraulico." 
         : "Learn how to locate and fix a water leak under the sink without calling a plumber.",
-      thumbnailUrl: "/lovable-uploads/78270a77-78e4-4907-885e-bee1ad407fce.png",
+      thumbnailUrl: "https://source.unsplash.com/random/800x450/?sink",
       duration: "08:45",
       author: "Anna V.",
       authorImage: "",
@@ -324,7 +325,7 @@ const TutorialPage = () => {
                     {categories.find(c => c.id === tutorial.category)?.name}
                   </span>
                   <div className="flex-1"></div>
-                  <Badge variant="outline" className={`text-xs border ${getDifficultyColor(tutorial.difficulty, darkMode)}`}>
+                  <Badge variant="outline" className={`text-xs border ${getDifficultyColor(tutorial.difficulty, darkMode)} whitespace-nowrap px-2`}>
                     {tutorial.difficulty === "beginner" 
                       ? (language === "it" ? "Base" : "Basic")
                       : tutorial.difficulty === "intermediate"

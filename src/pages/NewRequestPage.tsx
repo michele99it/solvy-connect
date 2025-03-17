@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Clock, MapPin, AlertCircle, Calendar, HelpCircle, Check } from "lucide-react";
+import { Clock, MapPin, Calendar, HelpCircle, Check, Image, Upload, Shield, Clock4, Award, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -14,9 +14,9 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import { useAppContext } from "@/contexts/AppContext";
-import CategorySelect from "@/components/CategorySelect"; // Fixed: changed to default import
+import CategorySelect from "@/components/CategorySelect";
 import FakeMap from "@/components/FakeMap";
-import { cn } from "@/lib/utils"; // Added: import the cn utility
+import { cn } from "@/lib/utils";
 
 const NewRequestPage = () => {
   const { darkMode, language } = useAppContext();
@@ -165,7 +165,7 @@ const NewRequestPage = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <label 
                   htmlFor="date"
@@ -218,13 +218,93 @@ const NewRequestPage = () => {
                 />
               </div>
             </div>
+            
+            <div className="grid gap-4">
+              <div className="grid gap-2">
+                <label 
+                  className={`text-sm font-medium leading-none ${darkMode ? "text-white" : ""}`}
+                >
+                  {language === "it" ? "Foto/Video" : "Photos/Videos"}
+                </label>
+                <div className={`border ${darkMode ? "border-gray-700" : "border-gray-200"} rounded-md p-4 flex flex-col items-center justify-center gap-2`}>
+                  <div className={`p-3 rounded-full ${darkMode ? "bg-gray-700" : "bg-gray-100"}`}>
+                    <Upload size={20} className={darkMode ? "text-gray-400" : "text-gray-500"} />
+                  </div>
+                  <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+                    {language === "it" 
+                      ? "Trascina qui i file o clicca per caricare" 
+                      : "Drag and drop files here or click to upload"}
+                  </p>
+                  <Button variant="secondary" size="sm" className="mt-2">
+                    <Image className="mr-2 h-4 w-4" />
+                    {language === "it" ? "Carica file" : "Upload files"}
+                  </Button>
+                </div>
+              </div>
+            </div>
           </CardContent>
-          <CardFooter>
-            <Button onClick={handleSubmit}>
+          <CardFooter className="flex flex-col">
+            <Button onClick={handleSubmit} className="w-full sm:w-auto">
               {language === "it" ? "Invia Richiesta" : "Submit Request"}
             </Button>
           </CardFooter>
         </Card>
+        
+        <div className={`mt-6 p-4 rounded-lg ${darkMode ? "bg-gray-800" : "bg-blue-50"} border ${darkMode ? "border-gray-700" : "border-blue-100"}`}>
+          <h3 className={`text-lg font-medium mb-4 ${darkMode ? "text-white" : "text-gray-800"}`}>
+            {language === "it" ? "Vantaggi del Network Solvy" : "Solvy Network Benefits"}
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex items-start gap-3">
+              <div className={`p-2 rounded-full ${darkMode ? "bg-blue-900/30 text-blue-400" : "bg-blue-100 text-blue-600"}`}>
+                <Shield size={20} />
+              </div>
+              <div>
+                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
+                  {language === "it" ? "Professionisti Verificati" : "Verified Professionals"}
+                </h4>
+                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                  {language === "it" 
+                    ? "Tutti i Solvers sono verificati e affidabili" 
+                    : "All Solvers are verified and reliable"}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <div className={`p-2 rounded-full ${darkMode ? "bg-green-900/30 text-green-400" : "bg-green-100 text-green-600"}`}>
+                <Clock4 size={20} />
+              </div>
+              <div>
+                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
+                  {language === "it" ? "Risposte Rapide" : "Quick Responses"}
+                </h4>
+                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                  {language === "it" 
+                    ? "Ricevi offerte entro poche ore" 
+                    : "Get offers within hours"}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <div className={`p-2 rounded-full ${darkMode ? "bg-purple-900/30 text-purple-400" : "bg-purple-100 text-purple-600"}`}>
+                <Award size={20} />
+              </div>
+              <div>
+                <h4 className={`text-sm font-medium ${darkMode ? "text-white" : "text-gray-800"}`}>
+                  {language === "it" ? "Garanzia di Qualità" : "Quality Guarantee"}
+                </h4>
+                <p className={`text-xs mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                  {language === "it" 
+                    ? "Soddisfatti o rimborsati" 
+                    : "Satisfaction or money back"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </Layout>
   );
