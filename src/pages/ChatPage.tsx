@@ -1,10 +1,9 @@
-
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, MoreVertical, Paperclip, Image, Phone, VideoIcon, InfoIcon } from "lucide-react";
+import { Send, MoreVertical, Paperclip, Image, InfoIcon } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -55,13 +54,13 @@ const chatsData = [
     messages: [
       {
         id: 1,
-        text: "Salve, ho un problema con il mio computer. Potresti aiutarmi? È un problema piuttosto complesso che richiede una soluzione immediata.",
+        text: "Salve, ho un problema con il mio computer. Potresti aiutarmi?",
         sender: "them",
         time: "Ieri"
       },
       {
         id: 2,
-        text: "Certo, mi può descrivere il problema? Sarei felice di aiutarla a trovare una soluzione adeguata.",
+        text: "Certo, mi può descrivere il problema? Sarei felice di aiutarla.",
         sender: "me",
         time: "Ieri"
       }
@@ -79,13 +78,13 @@ const chatsData = [
     messages: [
       {
         id: 1,
-        text: "Grazie per l'aiuto con il trasloco! Tutto perfetto. Sei stato davvero professionale e puntuale, apprezzo molto.",
+        text: "Grazie per l'aiuto con il trasloco! Tutto perfetto.",
         sender: "them",
         time: "Lunedì"
       },
       {
         id: 2,
-        text: "Grazie a te! Sono contento che sia andato tutto bene. Se hai bisogno di altro aiuto in futuro, fammi sapere.",
+        text: "Grazie a te! Sono contento che sia andato tutto bene.",
         sender: "me",
         time: "Lunedì"
       }
@@ -94,7 +93,7 @@ const chatsData = [
 ];
 
 // Function to truncate message text for previews
-const truncateMessage = (text: string, maxLength: number = 60) => {
+const truncateMessage = (text: string, maxLength: number = 45) => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + "...";
 };
@@ -272,26 +271,6 @@ const ChatPage = () => {
                     darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
                   )}
                 >
-                  <Phone size={18} />
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className={cn(
-                    "rounded-full", 
-                    darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
-                  )}
-                >
-                  <VideoIcon size={18} />
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className={cn(
-                    "rounded-full", 
-                    darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
-                  )}
-                >
                   <InfoIcon size={18} />
                 </Button>
               </div>
@@ -302,14 +281,14 @@ const ChatPage = () => {
               className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`} 
               ref={scrollAreaRef}
             >
-              <div className="space-y-4 px-4">
+              <div className="space-y-4 px-2">
                 <div className="flex justify-center">
                   <div className={`px-4 py-1 rounded-full text-xs ${darkMode ? "bg-gray-800 text-gray-400" : "bg-gray-200 text-gray-500"}`}>
                     {language === "it" ? "Oggi" : "Today"}
                   </div>
                 </div>
                 
-                {/* Message bubbles - Fixed overflow issue here */}
+                {/* Message bubbles - Fixed mobile layout and overflow issues */}
                 {activeChat.messages.map((msg) => (
                   <div 
                     key={msg.id}
@@ -327,13 +306,13 @@ const ChatPage = () => {
                     )}
                     <div 
                       className={cn(
-                        "max-w-[75%] md:max-w-[65%] rounded-2xl px-4 py-3 shadow-sm break-words",
+                        "max-w-[70%] sm:max-w-[75%] md:max-w-[65%] rounded-2xl px-4 py-2.5 shadow-sm break-words",
                         msg.sender === "me" 
                           ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-none" 
                           : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white border rounded-bl-none")
                       )}
                     >
-                      <p className="text-sm break-words">{msg.text}</p>
+                      <p className="text-sm break-words whitespace-pre-wrap">{msg.text}</p>
                       <p 
                         className={cn(
                           "text-right text-xs mt-1",
@@ -351,7 +330,7 @@ const ChatPage = () => {
             </ScrollArea>
             
             {/* Message input */}
-            <div className={`p-4 border-t ${darkMode ? "border-gray-700" : ""}`}>
+            <div className={`p-3 border-t ${darkMode ? "border-gray-700" : ""}`}>
               <div className="flex items-center gap-2">
                 <Button 
                   onClick={handleAttachClick}
