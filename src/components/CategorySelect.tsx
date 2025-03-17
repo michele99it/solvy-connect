@@ -37,11 +37,11 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           key={category.id}
           onClick={() => onCategoryChange(category.id)}
           className={cn(
-            "flex flex-col items-center gap-2 p-3 rounded-lg cursor-pointer transition-all",
+            "flex flex-col items-center gap-2 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:scale-105",
             selectedCategory === category.id
               ? darkMode
-                ? "bg-blue-900/30 border border-blue-500/50"
-                : "bg-blue-50 border border-blue-200"
+                ? "bg-blue-900/30 border border-blue-500/50 shadow-inner shadow-blue-500/10"
+                : "bg-blue-50 border border-blue-200 shadow-inner shadow-blue-100"
               : darkMode
               ? "hover:bg-gray-800 border border-gray-700"
               : "hover:bg-gray-50 border border-gray-100"
@@ -50,7 +50,7 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           <CategoryIcon 
             category={category.id} 
             size={18} 
-            bgClassName="w-9 h-9"
+            bgClassName="w-8 h-8"
           />
           <span className={cn(
             "text-xs font-medium text-center",

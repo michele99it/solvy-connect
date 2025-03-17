@@ -11,6 +11,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ChatPage from "./pages/ChatPage";
 import SearchPage from "./pages/SearchPage";
 import NewRequestPage from "./pages/NewRequestPage";
+import TutorialPage from "./pages/TutorialPage";
 import NotFound from "./pages/NotFound";
 import { useState, useEffect } from "react";
 
@@ -73,6 +74,7 @@ const App = () => {
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/new" element={<NewRequestPage />} />
+              <Route path="/tutorial" element={<TutorialPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

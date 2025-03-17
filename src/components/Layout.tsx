@@ -10,7 +10,14 @@ import {
   Bell,
   Settings,
   Plus,
-  Star
+  Star,
+  BookOpen,
+  LogOut,
+  ChevronRight,
+  Moon,
+  Sun,
+  Languages,
+  HelpCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { 
@@ -19,28 +26,29 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { 
-  Sheet, 
-  SheetContent, 
-  SheetHeader, 
-  SheetTitle, 
-  SheetTrigger,
-  SheetDescription,
-  SheetFooter,
-  SheetClose
-} from "@/components/ui/sheet";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useAppContext } from "@/contexts/AppContext";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useNavigate } from "react-router-dom";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const { darkMode, toggleDarkMode, language, setLanguage, translations } = useAppContext();
+  const { darkMode, toggleDarkMode, language, setLanguage, translations, logout } = useAppContext();
   const location = useLocation();
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const navigate = useNavigate();
   
   const isActive = (path: string) => location.pathname === path;
 
@@ -70,6 +78,7 @@ const Layout = ({ children }: LayoutProps) => {
           </div>
           
           <div className="flex items-center gap-2">
+            {/* Notifications */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative transition-transform duration-200 hover:scale-110">
@@ -208,108 +217,111 @@ const Layout = ({ children }: LayoutProps) => {
               </PopoverContent>
             </Popover>
             
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="transition-transform duration-200 hover:scale-110">
-                  <Settings size={20} />
+            {/* User Profile Dropdown - New position */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative transition-transform duration-200 hover:scale-110">
+                  <Avatar className="h-8 w-8 border-2 border-blue-100 dark:border-blue-900">
+                    <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm">
+                      MR
+                    </AvatarFallback>
+                  </Avatar>
                 </Button>
-              </SheetTrigger>
-              <SheetContent className={darkMode ? "bg-gray-800 border-gray-700 text-gray-100" : ""}>
-                <SheetHeader>
-                  <SheetTitle className={darkMode ? "text-gray-100" : ""}>
-                    {translations.settings}
-                  </SheetTitle>
-                  <SheetDescription className={darkMode ? "text-gray-400" : ""}>
-                    {translations.customizeExperience}
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="py-6 space-y-6">
-                  <div className="space-y-4">
-                    <h4 className={cn(
-                      "text-sm font-semibold",
-                      darkMode ? "text-gray-300" : ""
-                    )}>
-                      {translations.appearance}
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="darkMode" className={cn(
-                        "flex items-center gap-2",
-                        darkMode ? "text-gray-200" : ""
-                      )}>
-                        {translations.darkMode}
-                      </Label>
-                      <Switch 
-                        id="darkMode" 
-                        checked={darkMode} 
-                        onCheckedChange={toggleDarkMode} 
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h4 className={cn(
-                      "text-sm font-semibold",
-                      darkMode ? "text-gray-300" : ""
-                    )}>
-                      {translations.notifications}
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="notifications" className={cn(
-                        "flex items-center gap-2",
-                        darkMode ? "text-gray-200" : ""
-                      )}>
-                        {translations.enableNotifications}
-                      </Label>
-                      <Switch 
-                        id="notifications" 
-                        checked={true} 
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h4 className={cn(
-                      "text-sm font-semibold",
-                      darkMode ? "text-gray-300" : ""
-                    )}>
-                      {translations.language}
-                    </h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button 
-                        variant={language === "it" ? "default" : "outline"} 
-                        className="w-full"
-                        onClick={() => setLanguage("it")}
-                      >
-                        {translations.italian}
-                      </Button>
-                      <Button 
-                        variant={language === "en" ? "default" : "outline"}
-                        className="w-full"
-                        onClick={() => setLanguage("en")}
-                      >
-                        {translations.english}
-                      </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className={cn(
+                "w-56 p-2 rounded-xl", 
+                darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+              )}>
+                <div className="px-2 pt-1 pb-2">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                        MR
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className={cn("font-medium", darkMode ? "text-white" : "")}>Mario Rossi</p>
+                      <p className={cn("text-xs", darkMode ? "text-gray-400" : "text-gray-500")}>mario.rossi@example.com</p>
                     </div>
                   </div>
                 </div>
-                <SheetFooter>
-                  <SheetClose asChild>
-                    <Button className="w-full">
-                      {translations.saveSettings}
+                
+                <DropdownMenuSeparator className={darkMode ? "bg-gray-700" : ""} />
+                
+                <DropdownMenuItem 
+                  className={cn(
+                    "flex items-center gap-2 cursor-pointer rounded-md",
+                    darkMode ? "hover:bg-gray-700" : ""
+                  )}
+                  onClick={() => navigate("/profile")}
+                >
+                  <User size={16} />
+                  <span>{language === "it" ? "Profilo" : "Profile"}</span>
+                </DropdownMenuItem>
+                
+                <DropdownMenuItem 
+                  className={cn(
+                    "flex items-center gap-2 cursor-pointer rounded-md",
+                    darkMode ? "hover:bg-gray-700" : ""
+                  )}
+                >
+                  <Star size={16} />
+                  <span>{language === "it" ? "Abbonamento" : "Subscription"}</span>
+                </DropdownMenuItem>
+                
+                <DropdownMenuSeparator className={darkMode ? "bg-gray-700" : ""} />
+                
+                <div className="p-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Moon size={16} className={darkMode ? "text-blue-400" : ""} />
+                      <span className={darkMode ? "text-gray-200" : ""}>
+                        {language === "it" ? "Modalità scura" : "Dark mode"}
+                      </span>
+                    </div>
+                    <Switch checked={darkMode} onCheckedChange={toggleDarkMode} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Languages size={16} className={darkMode ? "text-blue-400" : ""} />
+                      <span className={darkMode ? "text-gray-200" : ""}>
+                        {language === "it" ? "Lingua" : "Language"}
+                      </span>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="xs"
+                      onClick={() => setLanguage(language === "it" ? "en" : "it")}
+                      className="text-xs font-normal"
+                    >
+                      {language === "it" ? "EN" : "IT"}
                     </Button>
-                  </SheetClose>
-                </SheetFooter>
-              </SheetContent>
-            </Sheet>
+                  </div>
+                </div>
+                
+                <DropdownMenuSeparator className={darkMode ? "bg-gray-700" : ""} />
+                
+                <DropdownMenuItem 
+                  className={cn(
+                    "flex items-center gap-2 cursor-pointer rounded-md text-red-500",
+                    darkMode ? "hover:bg-gray-700" : ""
+                  )}
+                >
+                  <LogOut size={16} />
+                  <span>{language === "it" ? "Disconnetti" : "Logout"}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>
       
-      <main className="flex-1 container px-4 py-6 md:px-6 md:py-8">
+      <main className="flex-1 container px-4 py-6 md:px-6 md:py-8 relative">
         {children}
       </main>
       
-      {/* Bottom Navigation Bar - Modern Version with Glass Effect */}
+      {/* Bottom Navigation Bar - Modernized with Tutorial instead of Profile */}
       <div className={cn(
         "sticky bottom-0 z-40 transition-all duration-300",
         darkMode 
@@ -404,11 +416,12 @@ const Layout = ({ children }: LayoutProps) => {
               <span className="text-xs mt-1 font-medium">{translations.chat}</span>
             </Link>
             
+            {/* Tutorial section replacing Profile */}
             <Link 
-              to="/profile" 
+              to="/tutorial" 
               className={cn(
                 "flex flex-col items-center py-2 px-4 rounded-lg transition-all duration-200",
-                isActive("/profile") 
+                isActive("/tutorial") 
                   ? darkMode 
                     ? "bg-blue-900/30 text-blue-400" 
                     : "bg-blue-50 text-solvy-blue" 
@@ -417,11 +430,11 @@ const Layout = ({ children }: LayoutProps) => {
                     : "text-solvy-gray hover:text-solvy-blue"
               )}
             >
-              <User 
+              <BookOpen 
                 size={22}
                 className="transition-all"
               />
-              <span className="text-xs mt-1 font-medium">{translations.profile}</span>
+              <span className="text-xs mt-1 font-medium">{language === "it" ? "Tutorial" : "Tutorials"}</span>
             </Link>
           </nav>
         </div>

@@ -41,7 +41,7 @@ export const CategoryIcon = ({
   category, 
   size = 16, 
   className = "",
-  bgClassName = "w-7 h-7"
+  bgClassName = "w-6 h-6"
 }: CategoryIconProps) => {
   const getIcon = () => {
     switch (category) {
