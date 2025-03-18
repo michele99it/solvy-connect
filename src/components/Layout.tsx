@@ -17,7 +17,8 @@ import {
   Moon,
   Sun,
   Languages,
-  HelpCircle
+  HelpCircle,
+  Wand2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { 
@@ -321,7 +322,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
       
-      {/* Bottom Navigation Bar - Modernized with Tutorial instead of Profile */}
+      {/* Bottom Navigation Bar - Updated with Wand2 icon instead of Plus */}
       <div className={cn(
         "sticky bottom-0 z-40 transition-all duration-300",
         darkMode 
@@ -389,7 +390,7 @@ const Layout = ({ children }: LayoutProps) => {
                     : "text-solvy-gray hover:text-solvy-blue"
               )}
             >
-              <Plus 
+              <Wand2 
                 size={22}
                 className="transition-all"
               />
@@ -416,7 +417,6 @@ const Layout = ({ children }: LayoutProps) => {
               <span className="text-xs mt-1 font-medium">{translations.chat}</span>
             </Link>
             
-            {/* Tutorial section replacing Profile */}
             <Link 
               to="/tutorial" 
               className={cn(
