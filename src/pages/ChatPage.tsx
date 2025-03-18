@@ -3,10 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, MoreVertical, Paperclip, Image, InfoIcon } from "lucide-react";
+import { Send, InfoIcon, Paperclip, Image } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import { useAppContext } from "@/contexts/AppContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/components/ui/badge";
@@ -146,21 +145,21 @@ const ChatPage = () => {
   
   return (
     <Layout>
-      <div className="space-y-6 pb-8">
-        <div className="flex flex-col space-y-1.5">
-          <h1 className={`text-2xl font-bold ${darkMode ? "text-white" : ""}`}>
+      <div className="space-y-6 -mx-4 sm:-mx-6 -mt-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)]">
+        <div className="flex flex-col space-y-1.5 bg-gradient-to-r from-[#3a8dff] to-[#439cf8] px-4 py-6 md:px-6">
+          <h1 className="text-2xl font-bold text-white">
             {language === "it" ? "Messaggi" : "Messages"}
           </h1>
-          <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+          <p className="text-sm text-blue-100">
             {language === "it" 
               ? "Comunica con altri utenti della piattaforma" 
               : "Communicate with other users on the platform"}
           </p>
         </div>
         
-        <div className={`flex h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] rounded-xl overflow-hidden shadow ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border border-gray-200"}`}>
+        <div className="flex h-full">
           {(showChatList || !isMobile) && (
-            <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col border-r ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
+            <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col ${darkMode ? "bg-gray-800" : "bg-white"}`}>
               <div className={`p-4 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
                 <h2 className={`font-semibold ${darkMode ? "text-white" : ""}`}>
                   {language === "it" ? "Conversazioni" : "Conversations"}
@@ -400,4 +399,3 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
-

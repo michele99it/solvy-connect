@@ -1,4 +1,3 @@
-
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -18,7 +17,7 @@ import {
   Sun,
   Languages,
   HelpCircle,
-  Wand2
+  UserCog
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { 
@@ -57,7 +56,6 @@ const Layout = ({ children }: LayoutProps) => {
     <div className={cn("flex flex-col min-h-screen", 
       darkMode ? "bg-gray-900" : "bg-gradient-to-b from-white to-blue-50"
     )}>
-      {/* Header */}
       <header className={cn(
         "sticky top-0 z-30 backdrop-blur-md transition-all duration-300", 
         darkMode 
@@ -79,7 +77,6 @@ const Layout = ({ children }: LayoutProps) => {
           </div>
           
           <div className="flex items-center gap-2">
-            {/* Notifications */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative transition-transform duration-200 hover:scale-110">
@@ -218,7 +215,6 @@ const Layout = ({ children }: LayoutProps) => {
               </PopoverContent>
             </Popover>
             
-            {/* User Profile Dropdown - New position */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative transition-transform duration-200 hover:scale-110">
@@ -322,7 +318,6 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
       
-      {/* Bottom Navigation Bar - Updated with Wand2 icon instead of Plus */}
       <div className={cn(
         "sticky bottom-0 z-40 transition-all duration-300",
         darkMode 
@@ -390,7 +385,7 @@ const Layout = ({ children }: LayoutProps) => {
                     : "text-solvy-gray hover:text-solvy-blue"
               )}
             >
-              <Wand2 
+              <UserCog 
                 size={22}
                 className="transition-all"
               />
