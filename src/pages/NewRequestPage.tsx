@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +13,8 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import { useAppContext } from "@/contexts/AppContext";
-import CategorySelect from "@/components/CategorySelect";
+import { CategorySelect } from "@/components/CategorySelect";
+import { CategoryType } from "@/components/CategoryIcon";
 import FakeMap from "@/components/FakeMap";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +22,7 @@ const NewRequestPage = () => {
   const { darkMode, language } = useAppContext();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState<"technology" | "home" | "maintenance" | "education" | "professional" | "shopping" | "transport" | "food" | "pets" | "music" | "art" | "other">("technology");
+  const [category, setCategory] = useState<CategoryType>("technology");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [budget, setBudget] = useState("");
@@ -65,6 +65,21 @@ const NewRequestPage = () => {
       budget
     });
   };
+  
+  const categories: CategoryType[] = [
+    "technology",
+    "home",
+    "maintenance",
+    "education",
+    "professional",
+    "shopping",
+    "transport",
+    "food",
+    "pets",
+    "music",
+    "art",
+    "other"
+  ];
   
   return (
     <Layout>
@@ -196,8 +211,10 @@ const NewRequestPage = () => {
                   {language === "it" ? "Categoria" : "Category"}
                 </label>
                 <CategorySelect 
+                  categories={categories} 
                   selectedCategory={category} 
-                  onCategoryChange={(cat) => setCategory(cat)}
+                  onSelectCategory={(cat) => setCategory(cat)}
+                  darkMode={darkMode}
                 />
               </div>
             </div>

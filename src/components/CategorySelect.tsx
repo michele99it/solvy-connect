@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { CategoryIcon } from './CategoryIcon';
+import { CategoryIcon, CategoryType } from './CategoryIcon';
 
 export interface CategorySelectProps {
   categories: string[];
-  selectedCategory: string;
-  onSelectCategory: (category: string) => void;
+  selectedCategory: CategoryType;
+  onSelectCategory: (category: CategoryType) => void;
   className?: string;
   darkMode?: boolean;
 }
@@ -33,15 +33,15 @@ export function CategorySelect({
                     ? "text-gray-400 hover:text-gray-200" 
                     : "text-gray-700 hover:bg-gray-100",
               )}
-              onClick={() => onSelectCategory(category)}
+              onClick={() => onSelectCategory(category as CategoryType)}
             >
-              <CategoryIcon category={category} className={isSelected ? "text-blue-600 dark:text-blue-400" : ""} />
+              <CategoryIcon category={category as CategoryType} className={isSelected ? "text-blue-600 dark:text-blue-400" : ""} />
               <span>{category}</span>
             </button>
             {isSelected && (
               <div 
                 className="absolute -bottom-1 left-0 bg-blue-100 dark:bg-blue-900/30 h-1 rounded-full"
-                style={{ width: `calc(100% - 10px)` }}
+                style={{ width: `${category.length * 8 + 36}px` }}
               ></div>
             )}
           </div>
