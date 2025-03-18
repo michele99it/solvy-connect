@@ -1,3 +1,4 @@
+
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ import {
   Sun,
   Languages,
   HelpCircle,
-  UserCog
+  Wrench
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { 
@@ -385,10 +386,21 @@ const Layout = ({ children }: LayoutProps) => {
                     : "text-solvy-gray hover:text-solvy-blue"
               )}
             >
-              <UserCog 
-                size={22}
-                className="transition-all"
-              />
+              <div className="relative">
+                <User 
+                  size={22}
+                  className="transition-all"
+                />
+                <Wrench 
+                  size={12}
+                  className={cn(
+                    "absolute -top-1 -right-1",
+                    isActive("/new") 
+                      ? darkMode ? "text-blue-400" : "text-solvy-blue" 
+                      : darkMode ? "text-gray-400" : "text-solvy-gray"
+                  )}
+                />
+              </div>
               <span className="text-xs mt-1 font-medium">{translations.create || "New"}</span>
             </Link>
             

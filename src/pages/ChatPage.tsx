@@ -1,3 +1,4 @@
+
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -145,8 +146,8 @@ const ChatPage = () => {
   
   return (
     <Layout>
-      <div className="space-y-6 -mx-4 sm:-mx-6 -mt-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)]">
-        <div className="flex flex-col space-y-1.5 bg-gradient-to-r from-[#3a8dff] to-[#439cf8] px-4 py-6 md:px-6">
+      <div className="space-y-0 -mx-4 sm:-mx-6 -mt-6 h-[calc(100vh-10rem)] md:h-[calc(100vh-8rem)]">
+        <div className="flex flex-col space-y-1.5 bg-gradient-to-r from-[#3a8dff] to-[#439cf8] px-4 py-3 md:px-6">
           <h1 className="text-2xl font-bold text-white">
             {language === "it" ? "Messaggi" : "Messages"}
           </h1>
@@ -160,7 +161,7 @@ const ChatPage = () => {
         <div className="flex h-full">
           {(showChatList || !isMobile) && (
             <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col ${darkMode ? "bg-gray-800" : "bg-white"}`}>
-              <div className={`p-4 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
+              <div className={`p-3 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
                 <h2 className={`font-semibold ${darkMode ? "text-white" : ""}`}>
                   {language === "it" ? "Conversazioni" : "Conversations"}
                 </h2>
@@ -173,7 +174,7 @@ const ChatPage = () => {
                 </Button>
               </div>
               
-              <div className="p-3">
+              <div className="p-2">
                 <Input 
                   placeholder={language === "it" ? "Cerca una chat..." : "Search chats..."}
                   className={`${darkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-gray-50"} rounded-full`}
@@ -185,7 +186,7 @@ const ChatPage = () => {
                   <div 
                     key={chat.id}
                     className={cn(
-                      "flex items-center gap-3 p-4 cursor-pointer transition-colors",
+                      "flex items-center gap-3 p-3 cursor-pointer transition-colors",
                       activeChat.id === chat.id 
                         ? (darkMode ? "bg-gray-700" : "bg-blue-50/80") 
                         : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"),
@@ -232,7 +233,7 @@ const ChatPage = () => {
           
           {(!isMobile || !showChatList) && (
             <div className="flex-1 flex flex-col">
-              <div className={`flex items-center justify-between p-4 border-b ${darkMode ? "border-gray-700" : ""}`}>
+              <div className={`flex items-center justify-between p-3 border-b ${darkMode ? "border-gray-700" : ""}`}>
                 <div className="flex items-center gap-3">
                   <Avatar className="border-2 border-transparent">
                     <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
@@ -279,12 +280,12 @@ const ChatPage = () => {
               </div>
               
               <ScrollArea 
-                className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`} 
+                className={`flex-1 p-3 ${darkMode ? "bg-gray-900/50" : "bg-blue-50/30"}`} 
                 ref={scrollAreaRef}
               >
                 <div className="space-y-4 px-2">
                   <div className="flex justify-center">
-                    <div className={`px-4 py-1 rounded-full text-xs ${darkMode ? "bg-gray-800 text-gray-400" : "bg-gray-200 text-gray-500"}`}>
+                    <div className={`px-3 py-1 rounded-full text-xs ${darkMode ? "bg-gray-800 text-gray-400" : "bg-blue-100/60 text-blue-800"}`}>
                       {language === "it" ? "Oggi" : "Today"}
                     </div>
                   </div>
@@ -309,7 +310,7 @@ const ChatPage = () => {
                           "max-w-[70%] sm:max-w-[75%] md:max-w-[65%] rounded-2xl px-4 py-2.5 shadow-sm break-words",
                           msg.sender === "me" 
                             ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-none" 
-                            : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white border rounded-bl-none")
+                            : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white/90 border border-blue-100 rounded-bl-none")
                         )}
                       >
                         <p className="text-sm break-words whitespace-pre-wrap">{msg.text}</p>
@@ -329,7 +330,7 @@ const ChatPage = () => {
                 </div>
               </ScrollArea>
               
-              <div className={`p-3 border-t ${darkMode ? "border-gray-700" : ""}`}>
+              <div className={`p-3 border-t ${darkMode ? "border-gray-700" : "border-blue-100"}`}>
                 <div className="flex items-center gap-2">
                   <Button 
                     onClick={handleAttachClick}
@@ -337,7 +338,7 @@ const ChatPage = () => {
                     variant="ghost"
                     className={cn(
                       "rounded-full", 
-                      darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
+                      darkMode ? "text-gray-300 hover:bg-gray-700" : "text-blue-500 hover:bg-blue-50"
                     )}
                     aria-label={language === "it" ? "Allega file" : "Attach file"}
                   >
@@ -356,7 +357,7 @@ const ChatPage = () => {
                     variant="ghost"
                     className={cn(
                       "rounded-full", 
-                      darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
+                      darkMode ? "text-gray-300 hover:bg-gray-700" : "text-blue-500 hover:bg-blue-50"
                     )}
                     aria-label={language === "it" ? "Allega immagine" : "Attach image"}
                     onClick={handleAttachClick}
@@ -371,7 +372,7 @@ const ChatPage = () => {
                     onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                     className={cn(
                       "flex-1 rounded-full",
-                      darkMode ? "bg-gray-700 border-gray-600 text-white focus:ring-blue-500 focus:border-blue-600" : "bg-gray-50 focus:ring-blue-400 focus:border-blue-500"
+                      darkMode ? "bg-gray-700 border-gray-600 text-white focus:ring-blue-500 focus:border-blue-600" : "bg-white border-blue-100 focus:ring-blue-300 focus:border-blue-300"
                     )}
                   />
                   <Button 
