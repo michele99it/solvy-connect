@@ -1,4 +1,3 @@
-
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -40,6 +39,7 @@ import { useAppContext } from "@/contexts/AppContext";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
+import SolvyLogo from "./SolvyLogo";
 
 interface LayoutProps {
   children: ReactNode;
@@ -387,14 +387,10 @@ const Layout = ({ children }: LayoutProps) => {
               )}
             >
               <div className="relative">
-                <User 
+                <SolvyLogo 
                   size={22}
-                  className="transition-all"
-                />
-                <Wrench 
-                  size={12}
                   className={cn(
-                    "absolute -top-1 -right-1",
+                    "transition-all",
                     isActive("/new") 
                       ? darkMode ? "text-blue-400" : "text-solvy-blue" 
                       : darkMode ? "text-gray-400" : "text-solvy-gray"
