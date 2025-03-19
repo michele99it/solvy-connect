@@ -20,10 +20,9 @@ export const SolvyLogo = ({ size = 22, className = "", ...props }: SolvyLogoProp
       className={className}
       {...props}
     >
-      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-      <path d="m12 5 2 2" />
-      <path d="m15 8-3 3" />
-      <path d="M9 11h.01" />
+      {/* Horizontal S logo, closely resembling the Solvy logo */}
+      <path d="M20 9c0-1.5-1-2-3-2H7c-2 0-3 .5-3 2 0 1.5 1 2 3 2h10c2 0 3 .5 3 2s-1 2-3 2H7c-2 0-3-.5-3-2" />
+      <path d="M16 6c-1 0-4 .5-5 2M8 18c1 0 4-.5 5-2" />
     </svg>
   );
 };
