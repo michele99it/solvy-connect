@@ -1,16 +1,15 @@
-
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, X, Paperclip, Image, Search } from "lucide-react";
+import { Send, MoreVertical, Paperclip, Image, InfoIcon } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { useAppContext } from "@/contexts/AppContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
 
 const chatsData = [
   {
@@ -93,7 +92,7 @@ const chatsData = [
   }
 ];
 
-const truncateMessage = (text: string, maxLength: number = 30) => {
+const truncateMessage = (text: string, maxLength: number = 20) => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + "...";
 };
@@ -102,15 +101,12 @@ const ChatPage = () => {
   const isMobile = useIsMobile();
   const { darkMode, language } = useAppContext();
   
-  const [chats, setChats] = useState(chatsData);
   const [activeChat, setActiveChat] = useState(chatsData[0]);
   const [message, setMessage] = useState("");
   const [showChatList, setShowChatList] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   
-  // Scroll to bottom when messages change
   useEffect(() => {
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
@@ -128,33 +124,7 @@ const ChatPage = () => {
   
   const sendMessage = () => {
     if (message.trim()) {
-      // Create a copy of all chats
-      const newChats = [...chats];
-      
-      // Find the active chat index
-      const chatIndex = newChats.findIndex(chat => chat.id === activeChat.id);
-      
-      if (chatIndex !== -1) {
-        // Create a new message object
-        const newMessage = {
-          id: activeChat.messages.length + 1,
-          text: message,
-          sender: "me",
-          time: new Date().getHours() + ":" + String(new Date().getMinutes()).padStart(2, '0')
-        };
-        
-        // Add new message to the chat's messages array
-        newChats[chatIndex].messages = [...newChats[chatIndex].messages, newMessage];
-        
-        // Update state
-        setChats(newChats);
-        setActiveChat(newChats[chatIndex]);
-        
-        // Show toast
-        toast.success(language === "it" ? "Messaggio inviato" : "Message sent");
-      }
-      
-      // Clear input
+      console.log("Sending message:", message);
       setMessage("");
     }
   };
@@ -168,10 +138,6 @@ const ChatPage = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       console.log("File selected:", e.target.files[0].name);
-      toast.info(language === "it" 
-        ? `File selezionato: ${e.target.files[0].name}` 
-        : `File selected: ${e.target.files[0].name}`);
-        
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -180,57 +146,50 @@ const ChatPage = () => {
   
   return (
     <Layout>
-      <div className="space-y-0 -mx-4 sm:-mx-6 -mt-8 h-[calc(100vh-10rem)] md:h-[calc(100vh-8rem)] flex flex-col">
-        {/* Header for the entire chat section */}
-        <div className="flex flex-col space-y-1.5 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3 md:px-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+      <div className="space-y-6 pb-8">
+        <div className="flex flex-col space-y-1.5">
+          <h1 className={`text-2xl font-bold ${darkMode ? "text-white" : ""}`}>
             {language === "it" ? "Messaggi" : "Messages"}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
             {language === "it" 
               ? "Comunica con altri utenti della piattaforma" 
               : "Communicate with other users on the platform"}
           </p>
         </div>
         
-        <div className="flex flex-1 overflow-hidden">
-          {/* Chat list panel */}
+        <div className={`flex h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] rounded-xl overflow-hidden shadow ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border border-gray-200"}`}>
           {(showChatList || !isMobile) && (
-            <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col ${darkMode ? "bg-gray-950" : "bg-white"} border-r ${darkMode ? "border-gray-800" : "border-gray-200"}`}>
-              <div className={`p-3 border-b flex justify-between items-center ${darkMode ? "border-gray-800" : "border-gray-200"}`}>
-                <h2 className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>
+            <div className={`${isMobile ? "w-full" : "w-1/3 lg:w-1/4"} flex flex-col border-r ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white"}`}>
+              <div className={`p-4 border-b flex justify-between items-center ${darkMode ? "border-gray-700" : ""}`}>
+                <h2 className={`font-semibold ${darkMode ? "text-white" : ""}`}>
                   {language === "it" ? "Conversazioni" : "Conversations"}
                 </h2>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className={darkMode ? "text-gray-300 hover:text-white hover:bg-gray-800" : "text-gray-500 hover:text-gray-900"}
+                  className={darkMode ? "text-gray-300 hover:text-white hover:bg-gray-700" : "text-gray-500 hover:text-gray-900"}
                 >
                   {language === "it" ? "Filtri" : "Filters"}
                 </Button>
               </div>
               
               <div className="p-3">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <Input 
-                    placeholder={language === "it" ? "Cerca una chat..." : "Search chats..."}
-                    className={`${darkMode ? "bg-gray-800 border-gray-700 text-white" : "bg-gray-100 border-gray-200"} pl-9 rounded-full`}
-                  />
-                </div>
+                <Input 
+                  placeholder={language === "it" ? "Cerca una chat..." : "Search chats..."}
+                  className={`${darkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-gray-50"} rounded-full`}
+                />
               </div>
               
               <ScrollArea className="flex-1">
-                {chats.map((chat) => (
+                {chatsData.map((chat) => (
                   <div 
                     key={chat.id}
                     className={cn(
                       "flex items-center gap-3 p-4 cursor-pointer transition-colors",
                       activeChat.id === chat.id 
-                        ? (darkMode ? "bg-gray-800" : "bg-gray-100") 
-                        : (darkMode ? "hover:bg-gray-900" : "hover:bg-gray-50"),
-                      "border-b",
-                      darkMode ? "border-gray-800" : "border-gray-100"
+                        ? (darkMode ? "bg-gray-700" : "bg-blue-50/80") 
+                        : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"),
                     )}
                     onClick={() => {
                       setActiveChat(chat);
@@ -240,22 +199,22 @@ const ChatPage = () => {
                     }}
                   >
                     <div className="relative">
-                      <Avatar className="h-12 w-12 border border-transparent">
+                      <Avatar className="border-2 border-transparent">
                         <AvatarFallback className={activeChat.id === chat.id 
-                          ? "bg-blue-500 text-white"
+                          ? "bg-gradient-to-br from-blue-500 to-purple-500 text-white"
                           : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
                         }>
                           {chat.user.name.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       {chat.user.online && (
-                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900"></span>
+                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></span>
                       )}
                     </div>
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-center mb-1">
-                        <h3 className={`font-medium truncate ${darkMode ? "text-white" : "text-gray-900"}`}>
+                        <h3 className={`font-medium truncate ${darkMode ? "text-white" : ""}`}>
                           {chat.user.name}
                         </h3>
                         <span className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
@@ -272,30 +231,18 @@ const ChatPage = () => {
             </div>
           )}
           
-          {/* Active chat panel */}
           {(!isMobile || !showChatList) && (
-            <div className="flex-1 flex flex-col overflow-hidden">
-              {/* Chat header */}
-              <div className={`flex items-center justify-between p-3 border-b ${darkMode ? "border-gray-800 bg-gray-900" : "border-gray-200 bg-white"}`}>
+            <div className="flex-1 flex flex-col">
+              <div className={`flex items-center justify-between p-4 border-b ${darkMode ? "border-gray-700" : ""}`}>
                 <div className="flex items-center gap-3">
-                  {isMobile && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="mr-1"
-                      onClick={() => setShowChatList(true)}
-                    >
-                      <X size={18} />
-                    </Button>
-                  )}
-                  <Avatar className="h-10 w-10 border border-transparent">
-                    <AvatarFallback className="bg-blue-500 text-white">
+                  <Avatar className="border-2 border-transparent">
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
                       {activeChat.user.name.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className={`font-medium ${darkMode ? "text-white" : "text-gray-900"}`}>
+                      <h3 className={`font-medium ${darkMode ? "text-white" : ""}`}>
                         {activeChat.user.name}
                       </h3>
                       {activeChat.user.online && (
@@ -318,16 +265,27 @@ const ChatPage = () => {
                     </div>
                   </div>
                 </div>
+                <div className="flex items-center gap-2">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className={cn(
+                      "rounded-full", 
+                      darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
+                    )}
+                  >
+                    <InfoIcon size={18} />
+                  </Button>
+                </div>
               </div>
               
-              {/* Messages area */}
               <ScrollArea 
-                className={`flex-1 p-3 ${darkMode ? "bg-gray-950" : "bg-white"}`} 
+                className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`} 
                 ref={scrollAreaRef}
               >
-                <div className="space-y-4 px-2 pb-2">
+                <div className="space-y-4 px-2">
                   <div className="flex justify-center">
-                    <div className={`px-3 py-1 rounded-full text-xs ${darkMode ? "bg-gray-800 text-gray-400" : "bg-gray-100 text-gray-500"}`}>
+                    <div className={`px-4 py-1 rounded-full text-xs ${darkMode ? "bg-gray-800 text-gray-400" : "bg-gray-200 text-gray-500"}`}>
                       {language === "it" ? "Oggi" : "Today"}
                     </div>
                   </div>
@@ -349,10 +307,10 @@ const ChatPage = () => {
                       )}
                       <div 
                         className={cn(
-                          "max-w-[70%] sm:max-w-[75%] md:max-w-[65%] rounded-xl px-4 py-2.5 shadow-sm break-words",
+                          "max-w-[70%] sm:max-w-[75%] md:max-w-[65%] rounded-2xl px-4 py-2.5 shadow-sm break-words",
                           msg.sender === "me" 
-                            ? "bg-blue-500 text-white rounded-br-none" 
-                            : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-gray-100 text-gray-800 rounded-bl-none")
+                            ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-none" 
+                            : (darkMode ? "bg-gray-800 text-white rounded-bl-none" : "bg-white border rounded-bl-none")
                         )}
                       >
                         <p className="text-sm break-words whitespace-pre-wrap">{msg.text}</p>
@@ -361,7 +319,7 @@ const ChatPage = () => {
                             "text-right text-xs mt-1",
                             msg.sender === "me" 
                               ? "text-blue-100" 
-                              : (darkMode ? "text-gray-400" : "text-gray-500")
+                              : (darkMode ? "text-gray-400" : "text-gray-400")
                           )}
                         >
                           {msg.time}
@@ -369,12 +327,10 @@ const ChatPage = () => {
                       </div>
                     </div>
                   ))}
-                  <div ref={messagesEndRef} />
                 </div>
               </ScrollArea>
               
-              {/* Message input area */}
-              <div className={`p-3 border-t ${darkMode ? "border-gray-800 bg-gray-900" : "border-gray-200 bg-white"}`}>
+              <div className={`p-3 border-t ${darkMode ? "border-gray-700" : ""}`}>
                 <div className="flex items-center gap-2">
                   <Button 
                     onClick={handleAttachClick}
@@ -382,7 +338,7 @@ const ChatPage = () => {
                     variant="ghost"
                     className={cn(
                       "rounded-full", 
-                      darkMode ? "text-gray-300 hover:bg-gray-800" : "text-gray-400 hover:bg-gray-100"
+                      darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
                     )}
                     aria-label={language === "it" ? "Allega file" : "Attach file"}
                   >
@@ -401,7 +357,7 @@ const ChatPage = () => {
                     variant="ghost"
                     className={cn(
                       "rounded-full", 
-                      darkMode ? "text-gray-300 hover:bg-gray-800" : "text-gray-400 hover:bg-gray-100"
+                      darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-500 hover:bg-gray-100"
                     )}
                     aria-label={language === "it" ? "Allega immagine" : "Attach image"}
                     onClick={handleAttachClick}
@@ -416,7 +372,7 @@ const ChatPage = () => {
                     onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                     className={cn(
                       "flex-1 rounded-full",
-                      darkMode ? "bg-gray-800 border-gray-700 text-white" : "bg-gray-100 border-gray-200"
+                      darkMode ? "bg-gray-700 border-gray-600 text-white focus:ring-blue-500 focus:border-blue-600" : "bg-gray-50 focus:ring-blue-400 focus:border-blue-500"
                     )}
                   />
                   <Button 
@@ -426,8 +382,8 @@ const ChatPage = () => {
                     className={cn(
                       "rounded-full",
                       !message.trim() 
-                        ? (darkMode ? "bg-gray-800 text-gray-500" : "bg-gray-200 text-gray-400") 
-                        : "bg-blue-500 hover:bg-blue-600"
+                        ? (darkMode ? "bg-gray-700 text-gray-400" : "bg-gray-200 text-gray-400") 
+                        : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
                     )}
                     aria-label={language === "it" ? "Invia messaggio" : "Send message"}
                   >
@@ -444,3 +400,4 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
+
